@@ -29,38 +29,25 @@
   html { scroll-behavior: smooth; }
   body {
     font-family: "Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
-    background: var(--bg);
-    color: var(--text1);
-    font-size: 14px;
-    line-height: 1.65;
-    min-height: 100vh;
+    background: var(--bg); color: var(--text1);
+    font-size: 14px; line-height: 1.65; min-height: 100vh;
   }
   a { color: var(--accent-glow); text-decoration: none; }
   a:hover { text-decoration: underline; }
   code {
-    font-family: "Consolas","Menlo",monospace;
-    font-size: 12px;
-    background: var(--card2);
-    border: 1px solid var(--border2);
-    padding: 1px 5px;
-    border-radius: 4px;
-    color: var(--accent-glow);
+    font-family: "Consolas","Menlo",monospace; font-size: 12px;
+    background: var(--card2); border: 1px solid var(--border2);
+    padding: 1px 5px; border-radius: 4px; color: var(--accent-glow);
   }
-
-  /* ── Layout ─────────────────────────────── */
   .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
 
-  /* ── Hero ───────────────────────────────── */
-  .hero {
-    text-align: center;
-    padding: 64px 0 48px;
-  }
+  /* Hero */
+  .hero { text-align: center; padding: 64px 0 48px; }
   .hero-icon {
     width: 76px; height: 76px;
     background: linear-gradient(135deg,#0067c0,#003f80);
-    border-radius: 20px;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 38px; margin-bottom: 22px;
+    border-radius: 20px; display: inline-flex; align-items: center;
+    justify-content: center; font-size: 38px; margin-bottom: 22px;
     box-shadow: 0 0 40px rgba(0,103,192,.4);
   }
   .hero h1 { font-size: 30px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 8px; }
@@ -74,54 +61,52 @@
   }
   .badge.accent  { background: rgba(0,103,192,.18); border-color: var(--accent); color: var(--accent-glow); }
   .badge.success { background: rgba(78,201,78,.12); border-color: var(--success); color: var(--success); }
-  .badge.danger  { background: rgba(240,71,71,.12); border-color: var(--danger); color: var(--danger); }
+  .badge.warn    { background: rgba(255,202,40,.10); border-color: var(--warning); color: var(--warning); }
 
-  /* ── Section dividers ───────────────────── */
-  .section-divider {
+  /* Section dividers */
+  .sdiv {
     display: flex; align-items: center; gap: 14px;
     margin: 52px 0 24px; padding-left: 52px;
   }
-  .section-divider span {
+  .sdiv span {
     font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
     text-transform: uppercase; color: var(--text3); white-space: nowrap;
   }
-  .section-divider::after { content:""; flex:1; height:1px; background:var(--border); }
+  .sdiv::after { content:""; flex:1; height:1px; background:var(--border); }
 
-  /* ── Timeline ───────────────────────────── */
+  /* Timeline */
   .timeline { position: relative; }
   .timeline::before {
     content:""; position:absolute; left:20px; top:0; bottom:0;
     width:2px; background:linear-gradient(to bottom,var(--border2),var(--border));
   }
 
-  /* ── Version block ──────────────────────── */
+  /* Version block */
   .vblock { position:relative; padding-left:52px; margin-bottom:36px; }
   .vdot {
     position:absolute; left:12px; top:24px;
     width:18px; height:18px; border-radius:50%;
     background:var(--card); border:2px solid var(--border2);
-    transition: box-shadow .2s;
   }
-  .vblock.current  .vdot { background:var(--success); border-color:var(--success); box-shadow:0 0 0 5px rgba(78,201,78,.18); }
-  .vblock.old      .vdot { background:var(--accent); border-color:var(--accent); }
+  .vblock.current   .vdot { background:var(--success); border-color:var(--success); box-shadow:0 0 0 5px rgba(78,201,78,.18); }
+  .vblock.patch     .vdot { background:#22c5c5; border-color:#22c5c5; box-shadow:0 0 0 5px rgba(34,197,197,.15); }
+  .vblock.old       .vdot { background:var(--accent); border-color:var(--accent); }
   .vblock.cancelled .vdot { background:var(--danger); border-color:var(--danger); }
-  .vblock.upcoming .vdot { background:var(--warning); border-color:var(--warning); box-shadow:0 0 0 5px rgba(255,202,40,.12); }
+  .vblock.upcoming  .vdot { background:var(--warning); border-color:var(--warning); box-shadow:0 0 0 5px rgba(255,202,40,.12); }
 
   .vcard {
     background:var(--card); border:1px solid var(--border);
-    border-radius:var(--radius); overflow:hidden;
-    transition: border-color .15s;
+    border-radius:var(--radius); overflow:hidden; transition: border-color .15s;
   }
   .vcard:hover { border-color:var(--border2); }
   .vblock.current   .vcard { border-color:rgba(78,201,78,.5); }
+  .vblock.patch     .vcard { border-color:rgba(34,197,197,.4); }
   .vblock.upcoming  .vcard { border-color:rgba(255,202,40,.3); border-style:dashed; }
-  .vblock.cancelled .vcard { border-color:rgba(240,71,71,.35); opacity:.85; }
+  .vblock.cancelled .vcard { border-color:rgba(240,71,71,.35); opacity:.82; }
 
   .vheader {
     display:flex; align-items:center; gap:12px; flex-wrap:wrap;
-    padding:16px 20px;
-    background:var(--card2);
-    border-bottom:1px solid var(--border);
+    padding:16px 20px; background:var(--card2); border-bottom:1px solid var(--border);
   }
   .vnum { font-size:16px; font-weight:700; }
   .vpill {
@@ -129,16 +114,17 @@
     padding:2px 10px; font-size:9px; font-weight:700;
     letter-spacing:.6px; text-transform:uppercase;
   }
-  .pill-current  { background:rgba(78,201,78,.18); color:var(--success); border:1px solid rgba(78,201,78,.5); }
-  .pill-cancelled{ background:rgba(240,71,71,.18); color:var(--danger);  border:1px solid rgba(240,71,71,.5); }
-  .pill-upcoming { background:rgba(255,202,40,.14); color:var(--warning); border:1px solid rgba(255,202,40,.4); }
-  .pill-rc       { background:rgba(0,103,192,.18); color:var(--accent-glow); border:1px solid rgba(0,103,192,.5); }
-  .pill-old      { background:rgba(255,255,255,.05); color:var(--text2); border:1px solid var(--border2); }
+  .pill-current  { background:rgba(78,201,78,.18);  color:var(--success);      border:1px solid rgba(78,201,78,.5); }
+  .pill-patch    { background:rgba(34,197,197,.16);  color:#22c5c5;             border:1px solid rgba(34,197,197,.4); }
+  .pill-cancelled{ background:rgba(240,71,71,.18);   color:var(--danger);       border:1px solid rgba(240,71,71,.5); }
+  .pill-upcoming { background:rgba(255,202,40,.14);  color:var(--warning);      border:1px solid rgba(255,202,40,.4); }
+  .pill-rc       { background:rgba(0,103,192,.18);   color:var(--accent-glow);  border:1px solid rgba(0,103,192,.5); }
+  .pill-old      { background:rgba(255,255,255,.05); color:var(--text2);        border:1px solid var(--border2); }
   .vdate { margin-left:auto; font-size:11px; color:var(--text3); white-space:nowrap; }
 
   .vbody { padding:18px 20px; }
 
-  /* ── Banners ────────────────────────────── */
+  /* Banners */
   .cancel-banner {
     background:rgba(240,71,71,.07); border:1px solid rgba(240,71,71,.25);
     border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:18px;
@@ -150,35 +136,39 @@
     border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:18px;
     font-size:13px; color:#d4a800; line-height:1.75;
   }
+  .patch-banner {
+    background:rgba(34,197,197,.07); border:1px solid rgba(34,197,197,.25);
+    border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:18px;
+    font-size:13px; color:#22c5c5; line-height:1.75;
+  }
 
-  /* ── Change sections ────────────────────── */
+  /* Change sections */
   .csect { margin-bottom:20px; }
   .csect:last-child { margin-bottom:0; }
   .slabel {
     font-size:9px; font-weight:700; letter-spacing:1.2px;
     text-transform:uppercase; color:var(--text3);
-    margin-bottom:10px; padding-bottom:6px;
-    border-bottom:1px solid var(--border);
+    margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--border);
   }
   .clist { list-style:none; display:flex; flex-direction:column; gap:7px; }
   .citem { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text2); line-height:1.6; }
   .citem b, .citem strong { color:var(--text1); font-weight:600; }
 
-  /* ── Tags ───────────────────────────────── */
+  /* Tags */
   .tag {
     display:inline-flex; align-items:center;
     border-radius:4px; padding:2px 7px;
     font-size:9px; font-weight:700; letter-spacing:.5px;
     text-transform:uppercase; white-space:nowrap; flex-shrink:0; margin-top:2px;
   }
-  .tag-new     { background:rgba(78,201,78,.16); color:var(--success); border:1px solid rgba(78,201,78,.4); }
-  .tag-fix     { background:rgba(96,174,255,.14); color:var(--accent-glow); border:1px solid rgba(96,174,255,.4); }
-  .tag-change  { background:rgba(255,202,40,.13); color:var(--warning); border:1px solid rgba(255,202,40,.35); }
-  .tag-removed { background:rgba(240,71,71,.14); color:var(--danger); border:1px solid rgba(240,71,71,.35); }
-  .tag-planned { background:rgba(179,157,219,.13); color:var(--purple); border:1px solid rgba(179,157,219,.35); }
-  .tag-break   { background:rgba(255,112,67,.13); color:var(--orange); border:1px solid rgba(255,112,67,.35); }
+  .tag-new     { background:rgba(78,201,78,.16);   color:var(--success);      border:1px solid rgba(78,201,78,.4); }
+  .tag-fix     { background:rgba(96,174,255,.14);  color:var(--accent-glow);  border:1px solid rgba(96,174,255,.4); }
+  .tag-change  { background:rgba(255,202,40,.13);  color:var(--warning);      border:1px solid rgba(255,202,40,.35); }
+  .tag-removed { background:rgba(240,71,71,.14);   color:var(--danger);       border:1px solid rgba(240,71,71,.35); }
+  .tag-planned { background:rgba(179,157,219,.13); color:var(--purple);       border:1px solid rgba(179,157,219,.35); }
+  .tag-break   { background:rgba(255,112,67,.13);  color:var(--orange);       border:1px solid rgba(255,112,67,.35); }
 
-  /* ── Dep table ──────────────────────────── */
+  /* Dep table */
   .dep-table { width:100%; border-collapse:collapse; margin-top:12px; font-size:12px; }
   .dep-table th,.dep-table td { padding:8px 12px; text-align:left; border-bottom:1px solid var(--border); }
   .dep-table th { color:var(--text3); font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; }
@@ -186,25 +176,13 @@
   .dep-table td:first-child { color:var(--accent-glow); font-weight:600; font-family:"Consolas","Menlo",monospace; }
   .dep-table tr:last-child td { border-bottom:none; }
 
-  /* ── Footer ─────────────────────────────── */
-  .footer {
-    text-align:center; padding:44px 0 0;
-    color:var(--text3); font-size:12px;
-    border-top:1px solid var(--border);
-    margin-top:20px;
-  }
+  /* Footer */
+  .footer { text-align:center; padding:44px 0 0; color:var(--text3); font-size:12px; border-top:1px solid var(--border); margin-top:20px; }
   .footer a { color:var(--accent-glow); }
-
-  /* ── Scrollbar ──────────────────────────── */
   ::-webkit-scrollbar { width:5px; }
   ::-webkit-scrollbar-track { background:var(--bg); }
   ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
-
-  @media (max-width:600px) {
-    .wrap { padding:0 14px 60px; }
-    .vheader { flex-direction:column; align-items:flex-start; }
-    .vdate { margin-left:0; }
-  }
+  @media (max-width:600px) { .wrap { padding:0 14px 60px; } }
 </style>
 </head>
 <body>
@@ -216,7 +194,7 @@
     <h1>Salary &amp; Goals Calculator</h1>
     <p>by Erick Perez — Panama 🇵🇦 &nbsp;·&nbsp; Full Version History</p>
     <div class="hero-badges">
-      <span class="badge accent">v2.0 Modern — Current</span>
+      <span class="badge accent">v2.0.5 — Current</span>
       <span class="badge success">Python 3.10 – 3.14 ✓</span>
       <span class="badge">6 Countries</span>
       <span class="badge">customtkinter</span>
@@ -226,54 +204,75 @@
 
   <div class="timeline">
 
-    <!-- ════════════════ CURRENT ════════════════ -->
-    <div class="section-divider"><span>Current Release</span></div>
+    <!-- ══════════════════ CURRENT ══════════════════ -->
+    <div class="sdiv"><span>Current Release</span></div>
 
+    <!-- v2.0.5 -->
     <div class="vblock current">
       <div class="vdot"></div>
       <div class="vcard">
         <div class="vheader">
-          <span class="vnum">v2.0 — Modern Edition</span>
+          <span class="vnum">v2.0.5 — Stability Patch</span>
           <span class="vpill pill-current">✓ Current</span>
+          <span class="vdate">April 10, 2026</span>
+        </div>
+        <div class="vbody">
+          <div class="patch-banner">
+            Stability patch for the v2.0 Modern Edition. Resolves all known launch failures
+            on Python 3.14 + Windows when running the <code>.py</code> file directly.
+            The EXE build was unaffected by these issues.
+          </div>
+          <div class="csect">
+            <div class="slabel">🐛 Bug Fixes</div>
+            <ul class="clist">
+              <li class="citem"><span class="tag tag-fix">FIX</span><strong><code>_tkinter.TclError: image "pyimage1" doesn't exist</code></strong> — <code>PhotoImage</code> objects created during the language boot screen and splash were cached in <code>_icon_cache</code>. When those widgets were destroyed, Tk invalidated the underlying image data, but the Python objects remained in the cache. <code>CalcApp._build_chrome()</code> then retrieved dead references. Fixed by calling <code>_icon_cache.clear()</code> after each screen teardown, before <code>CalcApp</code> builds its own widget tree.</li>
+              <li class="citem"><span class="tag tag-fix">FIX</span><strong><code>ModuleNotFoundError: No module named 'customtkinter'</code></strong> — Running <code>python SalaryGoals_Modern.py</code> failed if dependencies were not installed. Added <code>_ensure_deps()</code> which runs before any imports, detects missing packages with <code>importlib.util.find_spec()</code>, shows a dialog, and installs them automatically via <code>pip</code>.</li>
+              <li class="citem"><span class="tag tag-fix">FIX</span><strong><code>AttributeError: module 'importlib' has no attribute 'util'</code></strong> — In Python 3.14, <code>import importlib</code> does not automatically load the <code>util</code> submodule. Must be imported explicitly as <code>import importlib.util</code>.</li>
+              <li class="citem"><span class="tag tag-fix">FIX</span><strong>Crash log never generated</strong> — The previous crash logger lived inside <code>if __name__ == "__main__":</code>, which was never reached when the crash happened at import time. Replaced with a global <code>sys.excepthook</code> + <code>sys.stderr</code> redirect installed at <strong>line 1</strong>, before any other import.</li>
+            </ul>
+          </div>
+          <div class="csect">
+            <div class="slabel">🛡 Reliability Improvements</div>
+            <ul class="clist">
+              <li class="citem"><span class="tag tag-new">NEW</span>Global <code>sys.excepthook</code> installed at line 1 — catches crashes at module import time, not just inside <code>__main__</code></li>
+              <li class="citem"><span class="tag tag-new">NEW</span><code>sys.stderr</code> redirected to <code>SalaryGoals_crash.log</code> immediately — captures C-extension error messages that bypass Python's exception system</li>
+              <li class="citem"><span class="tag tag-new">NEW</span><code>_ensure_deps()</code> — auto-installs <code>customtkinter</code>, <code>pillow</code>, <code>reportlab</code> on first run with a user-facing dialog</li>
+              <li class="citem"><span class="tag tag-new">NEW</span>Crash log always written next to the running script or EXE, using <code>sys.frozen</code> to detect PyInstaller context</li>
+              <li class="citem"><span class="tag tag-change">CHANGE</span><code>except Exception</code> → <code>except BaseException</code> in <code>__main__</code> to catch <code>SystemExit</code> and <code>KeyboardInterrupt</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div><!-- /v2.0.5 -->
+
+    <!-- ══════════════════ PREVIOUS ══════════════════ -->
+    <div class="sdiv"><span>Previous Releases</span></div>
+
+    <!-- v2.0 -->
+    <div class="vblock patch">
+      <div class="vdot"></div>
+      <div class="vcard">
+        <div class="vheader">
+          <span class="vnum">v2.0 — Modern Edition</span>
+          <span class="vpill pill-patch">Superseded by v2.0.5</span>
           <span class="vdate">March 29, 2026</span>
         </div>
         <div class="vbody">
-
           <div class="csect">
             <div class="slabel">🔄 Complete UI Framework Migration</div>
             <ul class="clist">
               <li class="citem"><span class="tag tag-break">BREAKING</span>Entire UI migrated from plain <code>tkinter</code> to <code>customtkinter ≥ 5.2</code> — native rounded corners, smooth widgets on Windows 11</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>Frozen <code>DesignTokens</code> dataclass — 38 typed color tokens per theme, single source of truth for every color in the app</li>
-              <li class="citem"><span class="tag tag-new">NEW</span><code>ThemeManager</code> singleton with <code>subscribe(callback)</code> — every widget self-registers, live no-flicker theme switching</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>Theme preference + language choice persisted to <code>~/.sgc_prefs.json</code> — survived restarts</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>210px <code>Sidebar</code> — logo area, section label, 42px nav items with <strong>3px left accent bar</strong> on active step, badge icons, footer card</li>
-              <li class="citem"><span class="tag tag-new">NEW</span><code>PageHeader</code> — fixed 64px, title + subtitle + live flag canvas on every step</li>
-              <li class="citem"><span class="tag tag-new">NEW</span><code>StatusBar</code> — 30px bottom bar with live HH:MM:SS clock and step status messages</li>
-              <li class="citem"><span class="tag tag-new">NEW</span><code>ModernEntry</code> — <code>CTkEntry</code> wrapper, focus border animates 1→2px gray→accent</li>
-              <li class="citem"><span class="tag tag-new">NEW</span><code>ModernCombo</code> — <code>CTkComboBox</code> with live flag canvas preview</li>
-              <li class="citem"><span class="tag tag-new">NEW</span><code>AccentButton</code> — 4 variants: primary / ghost / danger / success, all theme-subscribed</li>
-              <li class="citem"><span class="tag tag-new">NEW</span><code>Card</code>, <code>NoteBox</code>, <code>SectionHeader</code>, <code>Tooltip</code>, <code>ScrollableContent</code> widget library</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>PDF export improved — section groupings, right-aligned values, cleaner header bar</li>
+              <li class="citem"><span class="tag tag-new">NEW</span>Frozen <code>DesignTokens</code> dataclass — 38 typed color tokens per theme, single source of truth</li>
+              <li class="citem"><span class="tag tag-new">NEW</span><code>ThemeManager</code> singleton with <code>subscribe(callback)</code> — live no-flicker theme switching</li>
+              <li class="citem"><span class="tag tag-new">NEW</span>Theme + language preference persisted to <code>~/.sgc_prefs.json</code></li>
+              <li class="citem"><span class="tag tag-new">NEW</span>210px <code>Sidebar</code> — logo, nav items with 3px left accent bar, badge icons, footer card</li>
+              <li class="citem"><span class="tag tag-new">NEW</span><code>PageHeader</code> (64px), <code>StatusBar</code> (30px with live clock), <code>ModernEntry</code>, <code>ModernCombo</code>, <code>AccentButton</code></li>
+              <li class="citem"><span class="tag tag-fix">FIX</span><strong>Silent crash on launch</strong> — <code>CalcApp</code> inherited <code>ctk.CTk</code>, creating a second Tk root. Changed to <code>ctk.CTkFrame</code>, accepting <code>root</code> as parameter.</li>
+              <li class="citem"><span class="tag tag-fix">FIX</span><code>ctk.set_appearance_mode()</code> moved to after <code>ctk.CTk()</code> creation</li>
+              <li class="citem"><span class="tag tag-fix">FIX</span><code>TM.set_theme()</code> moved to after <code>super().__init__()</code> in <code>CalcApp</code></li>
+              <li class="citem"><span class="tag tag-change">KEPT</span>All 6 tax calculators, full ES/EN translations, sessions, bar chart, projection chart, hover details, PDF export — 100% preserved</li>
             </ul>
           </div>
-
-          <div class="csect">
-            <div class="slabel">🐛 Critical Bug Fixed in v2.0 (was not in v1.x)</div>
-            <ul class="clist">
-              <li class="citem"><span class="tag tag-fix">FIX</span><strong>Silent crash on launch — dual <code>ctk.CTk()</code> root:</strong> <code>CalcApp</code> inherited <code>ctk.CTk</code>, so calling <code>CalcApp()</code> from the entry point created a <em>second</em> Tk interpreter while the first was already in <code>mainloop()</code>. Windows silently killed the process with no error output. Fixed by changing <code>CalcApp(ctk.CTk)</code> → <code>CalcApp(ctk.CTkFrame)</code>, adding a <code>root</code> parameter, and delegating all window-level calls (<code>title</code>, <code>minsize</code>, <code>iconbitmap</code>) to <code>self.root</code>.</li>
-            </ul>
-          </div>
-
-          <div class="csect">
-            <div class="slabel">✅ Preserved 100% from v1.x</div>
-            <ul class="clist">
-              <li class="citem"><span class="tag tag-change">KEPT</span>All 6 tax calculators — Panama, Colombia, Mexico, USA, Costa Rica, Peru (identical logic)</li>
-              <li class="citem"><span class="tag tag-change">KEPT</span>Full ES + EN translation dicts — every key preserved</li>
-              <li class="citem"><span class="tag tag-change">KEPT</span>Session save/load (<code>~/.salary_calc_sessions.json</code>), bar chart, projection chart, hover detail popups</li>
-              <li class="citem"><span class="tag tag-change">KEPT</span>All 8 guided steps, <code>BooleanVar</code> boot screen, Python 3.14-safe screen dimension caching</li>
-            </ul>
-          </div>
-
           <div class="csect">
             <div class="slabel">📦 Dependencies</div>
             <table class="dep-table">
@@ -285,13 +284,12 @@
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </div><!-- /v2.0 -->
 
-    <!-- ════════════════ CANCELLED ════════════════ -->
-    <div class="section-divider"><span>Cancelled Versions</span></div>
+    <!-- ══════════════════ CANCELLED ══════════════════ -->
+    <div class="sdiv"><span>Cancelled Versions</span></div>
 
     <!-- v1.1.1 CANCELLED -->
     <div class="vblock cancelled">
@@ -311,16 +309,15 @@
             rather than shipping them as a patch on top of the aging plain-<code>tkinter</code>
             architecture, the decision was made to <strong>skip v1.1.1 entirely</strong>
             and fold all fixes directly into the <strong>v2.0 Modern Edition</strong>
-            rewrite using <code>customtkinter</code>. The bugs were fully resolved in v2.0.
+            rewrite. Both bugs are fully resolved in v2.0.
           </div>
-          <div class="slabel">What was fixed instead in v2.0</div>
           <ul class="clist">
-            <li class="citem"><span class="tag tag-fix">FIX</span><strong><code>AttributeError: 'CalcApp' has no attribute '_step_resultado'</code></strong> — the <code>def _step_resultado(self):</code> declaration was accidentally dropped during v1.1 development. Method body existed but Python never registered the method. Fixed in v2.0 by full rewrite.</li>
-            <li class="citem"><span class="tag tag-fix">FIX</span><strong>Language popup not centered on screen</strong> — <code>winfo_screenwidth()</code> called before <code>update_idletasks()</code>, returning <code>1</code> on Windows Python 3.14. Fixed in v2.0 by caching screen dimensions once at startup before any UI operations, and migrating <code>wait_window()</code> to <code>wait_variable(BooleanVar)</code>.</li>
+            <li class="citem"><span class="tag tag-fix">FIX</span><strong>Was going to fix:</strong> <code>AttributeError: 'CalcApp' has no attribute '_step_resultado'</code> — <code>def</code> declaration was dropped during v1.1 chart injection. Resolved in v2.0 full rewrite.</li>
+            <li class="citem"><span class="tag tag-fix">FIX</span><strong>Was going to fix:</strong> Language popup not centered — <code>winfo_screenwidth()</code> called before <code>update_idletasks()</code>. Resolved in v2.0 with screen dims cached before any UI.</li>
           </ul>
         </div>
       </div>
-    </div><!-- /v1.1.1 cancelled -->
+    </div>
 
     <!-- v0.3 Beta CANCELLED -->
     <div class="vblock cancelled">
@@ -334,19 +331,17 @@
         <div class="vbody">
           <div class="cancel-banner">
             <strong>⊘ Why this version was cancelled</strong>
-            v0.3 Beta was underway when repeated Python 3.14 crashes made it unshippable.
-            The crashes originated from creating <code>Toplevel</code> windows before
-            <code>root.update()</code> was called — a deep architectural flaw with no safe
-            incremental patch. Rather than ship a broken release, all completed v0.3 work
-            (Mexico taxes, canvas flags, Win11 themes, animated splash) was frozen and
-            folded into a ground-up rebuild shipped directly as <strong>v1.0 RC</strong>.
+            v0.3 Beta was underway when repeated Python 3.14 crashes from creating
+            <code>Toplevel</code> before <code>root.update()</code> made it unshippable.
+            All completed work (Mexico taxes, canvas flags, Win11 themes, animated splash)
+            was frozen and rebuilt from scratch as <strong>v1.0 RC</strong>.
           </div>
         </div>
       </div>
-    </div><!-- /v0.3 cancelled -->
+    </div>
 
-    <!-- ════════════════ PREVIOUS ════════════════ -->
-    <div class="section-divider"><span>Previous Releases</span></div>
+    <!-- ══════════════════ OLDER ══════════════════ -->
+    <div class="sdiv"><span>Older Releases</span></div>
 
     <!-- v1.1 -->
     <div class="vblock old">
@@ -358,26 +353,16 @@
           <span class="vdate">March 24, 2026</span>
         </div>
         <div class="vbody">
-          <div class="csect">
-            <div class="slabel">🌍 New Countries (3)</div>
-            <ul class="clist">
-              <li class="citem"><span class="tag tag-new">NEW</span>USA 🇺🇸 — Social Security 6.2% + Medicare 1.45% + Federal Tax 2024 (7 brackets, std. deduction $14,600)</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>Costa Rica 🇨🇷 — CCSS SEM 5.5% + IVM 3.84% + Banco Pop. ~1% + ISR 2024 (exento ≤ ₡929k/mo, 5 tramos)</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>Peru 🇵🇪 — ONP 13% + Impuesto a la Renta 2024 (5 tramos, 7 UIT deduction = S/36,050/yr)</li>
-            </ul>
-          </div>
-          <div class="csect">
-            <div class="slabel">📊 New UI Features</div>
-            <ul class="clist">
-              <li class="citem"><span class="tag tag-new">NEW</span>Expense breakdown horizontal bar chart — hover tooltip with % of total</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>Savings projection line chart — goal threshold line in amber, turns green at goal month, hover dot</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>Hover detail popup cards on every result row</li>
-              <li class="citem"><span class="tag tag-new">NEW</span>Built-in Release Notes window (📋 button in title bar)</li>
-            </ul>
-          </div>
+          <ul class="clist">
+            <li class="citem"><span class="tag tag-new">NEW</span>USA 🇺🇸, Costa Rica 🇨🇷, Peru 🇵🇪 — 3 new countries with full 2024 tax tables</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>Expense breakdown horizontal bar chart with hover % tooltip</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>Savings projection line chart — goal line, hover dot, turns green at goal month</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>Hover detail popup cards on every result row</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>Built-in Release Notes window (📋 button in title bar)</li>
+          </ul>
         </div>
       </div>
-    </div><!-- /v1.1 -->
+    </div>
 
     <!-- v1.0 RC -->
     <div class="vblock old">
@@ -392,16 +377,14 @@
           <ul class="clist">
             <li class="citem"><span class="tag tag-new">NEW</span>Complete UI rebuild — Windows 11 Fluent Design (plain <code>tkinter</code>)</li>
             <li class="citem"><span class="tag tag-new">NEW</span>Mexico 🇲🇽 — IMSS ~6.5% + ISR 2024 monthly table (10 brackets)</li>
-            <li class="citem"><span class="tag tag-new">NEW</span>Vertical sidebar + horizontal pip breadcrumb, PIL icon system, 60fps Tweener animation engine</li>
-            <li class="citem"><span class="tag tag-fix">FIX</span>Python 3.14 crash — single-root architecture, <code>root.update()</code> gate before any widget creation</li>
-            <li class="citem"><span class="tag tag-fix">FIX</span><code>TclError: font "" doesn't exist</code> on Windows Python 3.14</li>
-            <li class="citem"><span class="tag tag-removed">REMOVED</span>All "Beta" labels from UI strings — first production-ready release</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>Vertical sidebar + horizontal pip breadcrumb, PIL icon system, 60fps Tweener engine</li>
+            <li class="citem"><span class="tag tag-fix">FIX</span>Python 3.14 crash — single-root architecture, <code>root.update()</code> gate</li>
           </ul>
         </div>
       </div>
-    </div><!-- /v1.0 RC -->
+    </div>
 
-    <!-- v0.2 Beta -->
+    <!-- v0.2 / v0.1 -->
     <div class="vblock old">
       <div class="vdot"></div>
       <div class="vcard">
@@ -412,17 +395,13 @@
         </div>
         <div class="vbody">
           <ul class="clist">
-            <li class="citem"><span class="tag tag-new">NEW</span>Language boot screen (EN/ES before splash), Dark/Light mode live toggle</li>
-            <li class="citem"><span class="tag tag-new">NEW</span>Save &amp; load named sessions — local JSON (<code>~/.salary_calc_sessions.json</code>)</li>
-            <li class="citem"><span class="tag tag-new">NEW</span>Colombia 🇨🇴 — Pensión 4% + Salud 4% + Retención en la Fuente UVT 2024 + COP</li>
-            <li class="citem"><span class="tag tag-fix">FIX</span>Session data not persisting between steps</li>
-            <li class="citem"><span class="tag tag-fix">FIX</span>PDF generation failing with special characters in name field</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>Language boot screen (EN/ES), Dark/Light live toggle, Save &amp; load sessions</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>Colombia 🇨🇴 — Pensión 4% + Salud 4% + Retención UVT 2024</li>
           </ul>
         </div>
       </div>
-    </div><!-- /v0.2 -->
+    </div>
 
-    <!-- v0.1 Beta -->
     <div class="vblock old">
       <div class="vdot"></div>
       <div class="vcard">
@@ -433,16 +412,14 @@
         </div>
         <div class="vbody">
           <ul class="clist">
-            <li class="citem"><span class="tag tag-new">NEW</span>8-step guided calculator — Profile → Goal → Income → Home → Debts → Leisure → Extras → Results</li>
-            <li class="citem"><span class="tag tag-new">NEW</span>Panama 🇵🇦 — CSS 9.75% + Educational Insurance 1.25% + ISR progressive</li>
-            <li class="citem"><span class="tag tag-new">NEW</span>Bilingual EN/ES interface, PDF export via reportlab, animated splash with bouncing coin</li>
+            <li class="citem"><span class="tag tag-new">NEW</span>8-step guided calculator, Panama 🇵🇦 only, bilingual EN/ES, PDF export, animated splash</li>
           </ul>
         </div>
       </div>
-    </div><!-- /v0.1 -->
+    </div>
 
-    <!-- ════════════════ FUTURE ════════════════ -->
-    <div class="section-divider"><span>Planned Future Releases</span></div>
+    <!-- ══════════════════ FUTURE ══════════════════ -->
+    <div class="sdiv"><span>Planned Future Releases</span></div>
 
     <!-- v2.1 -->
     <div class="vblock upcoming">
@@ -454,22 +431,18 @@
           <span class="vdate">Q2 2026</span>
         </div>
         <div class="vbody">
-          <div class="upcoming-banner">
-            Focus: deeper visual polish on results page, chart improvements, and UX quality.
-            No new countries planned — keeping the release small and shippable.
-          </div>
+          <div class="upcoming-banner">Focus: visual polish and UX quality. No new countries planned for this release.</div>
           <ul class="clist">
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Animated count-up on summary values (Tweener engine port to customtkinter)</li>
+            <li class="citem"><span class="tag tag-planned">PLANNED</span>Animated count-up on summary values</li>
             <li class="citem"><span class="tag tag-planned">PLANNED</span>Pie chart toggle on expense breakdown (bar ↔ pie)</li>
             <li class="citem"><span class="tag tag-planned">PLANNED</span>Accent color picker — choose your own Win11 highlight color</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Compact mode for 1280×720 screens</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Font size scaling slider for accessibility</li>
+            <li class="citem"><span class="tag tag-planned">PLANNED</span>Compact mode for 1280×720 screens + font scaling slider</li>
             <li class="citem"><span class="tag tag-planned">PLANNED</span>Smooth animated page transitions between steps</li>
             <li class="citem"><span class="tag tag-planned">PLANNED</span>Mica-effect background blur on Windows 11 (via <code>ctypes.windll.dwmapi</code>)</li>
           </ul>
         </div>
       </div>
-    </div><!-- /v2.1 -->
+    </div>
 
     <!-- v2.2 -->
     <div class="vblock upcoming">
@@ -482,17 +455,14 @@
         </div>
         <div class="vbody">
           <ul class="clist">
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Argentina 🇦🇷 — ANSES + AFIP / Ganancias 2024</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Chile 🇨🇱 — AFP + SIS + Impuesto Único 2024</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>España 🇪🇸 — Seguridad Social + IRPF 2024</li>
+            <li class="citem"><span class="tag tag-planned">PLANNED</span>Argentina 🇦🇷, Chile 🇨🇱, España 🇪🇸 — full 2024 tax tables</li>
             <li class="citem"><span class="tag tag-planned">PLANNED</span>Export to Excel (.xlsx) with embedded charts</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Salary negotiation what-if slider — visualize the impact of a raise in real time</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Debt payoff calculator — months to zero at current savings rate</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Multiple savings goals (up to 5) with individual progress rings</li>
+            <li class="citem"><span class="tag tag-planned">PLANNED</span>Salary negotiation what-if slider</li>
+            <li class="citem"><span class="tag tag-planned">PLANNED</span>Debt payoff calculator + multiple savings goals (up to 5)</li>
           </ul>
         </div>
       </div>
-    </div><!-- /v2.2 -->
+    </div>
 
     <!-- v3.0 -->
     <div class="vblock upcoming">
@@ -505,14 +475,12 @@
         </div>
         <div class="vbody">
           <ul class="clist">
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Android APK — Kivy/BeeWare port (prototype already exists)</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Web version — PyScript or React build</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Optional encrypted cloud session sync across devices</li>
-            <li class="citem"><span class="tag tag-planned">PLANNED</span>Live exchange rate API — COP / MXN / CRC / PEN ↔ USD</li>
+            <li class="citem"><span class="tag tag-planned">PLANNED</span>Android APK (Kivy/BeeWare), Web version (PyScript/React)</li>
+            <li class="citem"><span class="tag tag-planned">PLANNED</span>Optional encrypted cloud session sync, live exchange rates API</li>
           </ul>
         </div>
       </div>
-    </div><!-- /v3.0 -->
+    </div>
 
   </div><!-- /timeline -->
 
@@ -527,7 +495,6 @@
       GPL-3.0 &nbsp;·&nbsp; pip install customtkinter pillow reportlab
     </p>
   </div>
-
 </div>
 </body>
 </html>
