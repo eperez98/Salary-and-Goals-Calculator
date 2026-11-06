@@ -43,7 +43,7 @@
 - `MemoryAdapter`: pruebas unitarias.
 
 ## Actualizaciones
-`src-tauri/src/updater.rs` (comandos `check_update` e `install_update`) consulta `api.github.com/repos/<repo>/releases`, elige la versión SemVer más alta que la instalada (con o sin pre-releases), descarga el `*-setup.exe` con progreso (`update://progress`), verifica SHA-256 contra `SHA256SUMS.txt`, lanza el instalador en modo pasivo (`/P`) y cierra la app. El flujo `release.yml` publica los archivos que necesita (instalador, `SHA256SUMS.txt`, `version.json`).
+`src-tauri/src/updater.rs` (comandos `check_update` e `install_update`) consulta `api.github.com/repos/<repo>/releases`, elige la versión SemVer más alta que la instalada (con o sin pre-releases), descarga el paquete `Monto_<versión>_x64.zip` con progreso (`update://progress`), verifica su SHA-256 con el `digest` que publica GitHub, lo descomprime con `tar.exe` de Windows, verifica el instalador contra el `SHA256SUMS.txt` del zip, lanza el instalador en modo pasivo (`/P`) y cierra la app. El flujo `release.yml` publica ese único zip (instalador, `SHA256SUMS.txt` y `LEEME.txt`).
 
 ## Seguridad
 - CSP estricta (`default-src 'self'`, `script-src 'self' 'wasm-unsafe-eval'`), sin recursos remotos ni fuentes externas.

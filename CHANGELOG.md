@@ -16,7 +16,9 @@ Primera versión publicada de **Monto**. Incluye todas las funciones de 0.4.8-be
 
 ### Nuevas funcionalidades
 - **Interfaz en inglés.** Toda la aplicación está disponible en español e inglés: menús, formularios, avisos, mensajes de error, informes exportados, fechas y categorías predeterminadas. La primera vez se usa el idioma de Windows y se puede cambiar en la configuración inicial o en *Configuración → Apariencia*.
-- **Instalador bilingüe.** El instalador `.exe` pregunta el idioma (español o inglés) y se publican dos MSI: `es-ES` y `en-US`.
+- **Instalador bilingüe.** El instalador pregunta el idioma (español o inglés).
+- **Descarga en un solo archivo.** Cada versión se publica como `Monto_<versión>_x64.zip` con el instalador, `SHA256SUMS.txt` y `LEEME.txt`. Se deja de publicar el MSI.
+- El actualizador integrado descarga ese zip, comprueba su SHA-256 con el que informa GitHub, lo descomprime y verifica el instalador antes de ejecutarlo.
 
 ### Cambios
 - Las categorías predeterminadas se crean al terminar la configuración inicial, en el idioma elegido. Las bases de datos existentes conservan sus nombres.

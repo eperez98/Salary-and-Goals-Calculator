@@ -32,7 +32,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis", "msi"],
+    "targets": ["nsis"],
     "publisher": "Monto",
     "copyright": "© 2026 Erick Arturo Pérez Cazorla · Licencia MIT",
     "category": "Finance",

@@ -46,16 +46,17 @@ jobs:
         run: |
           $installer = Get-ChildItem src-tauri/target/release/bundle/nsis/*.exe | Select-Object -First 1
           ./scripts/windows-smoke-test.ps1 -Installer $installer.FullName
-      - name: Preparar archivos de la versión
+      - name: Preparar el paquete (zip con el instalador)
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force release | Out-Null
-          Copy-Item src-tauri/target/release/bundle/nsis/*.exe release/
-          Copy-Item src-tauri/target/release/bundle/msi/*.msi release/
-          node scripts/release-notes.mjs $env:TAG > release/NOTAS.md
           $v = $env:TAG.TrimStart('v')
-          @{ name = 'Monto'; version = $v; tag = $env:TAG; date = (Get-Date -Format 'yyyy-MM-dd'); commit = "${{ github.sha }}"; platforms = @('windows-x64') } | ConvertTo-Json | Out-File -Encoding utf8 release/version.json
-          Get-ChildItem release -File | Where-Object { $_.Name -ne 'SHA256SUMS.txt' } | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Out-File -Encoding ascii release/SHA256SUMS.txt
+          $pkg = "release/Monto_${v}_x64"
+          New-Item -ItemType Directory -Force $pkg | Out-Null
+          Copy-Item "src-tauri/target/release/bundle/nsis/Monto_${v}_x64-setup.exe" $pkg/ -ErrorAction Stop
+          Copy-Item packaging/LEEME.txt $pkg/
+          Get-ChildItem $pkg -Filter *.exe | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Out-File -Encoding ascii "$pkg/SHA256SUMS.txt"
+          Compress-Archive -Path "$pkg/*" -DestinationPath "$pkg.zip"
+          node scripts/release-notes.mjs $env:TAG > release/NOTAS.md
       - name: Crear GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -64,8 +65,4 @@ jobs:
           body_path: release/NOTAS.md
           draft: false
           prerelease: ${{ contains(env.TAG, '-') }}
-          files: |
-            release/*.exe
-            release/*.msi
-            release/version.json
-            release/SHA256SUMS.txt
+          files: release/*.zip

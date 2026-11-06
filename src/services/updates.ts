@@ -4,7 +4,7 @@ import { tr } from '../lib/i18n';
 
 export interface UpdateInfo {
   version: string; current: string; name: string; notes: string; date: string | null; prerelease: boolean;
-  htmlUrl: string; installerName: string; installerUrl: string; installerSize: number; sumsUrl: string | null;
+  htmlUrl: string; installerName: string; installerUrl: string; installerSize: number; sha256: string | null;
 }
 
 export const updatesSupported = () => isTauri();

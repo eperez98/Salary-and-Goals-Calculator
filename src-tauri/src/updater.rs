@@ -3,10 +3,12 @@
 //! * `check_update` asks the GitHub Releases API for the newest version
 //!   (optionally including Beta pre-releases) and compares it with the
 //!   running version using SemVer.
-//! * `install_update` downloads the NSIS installer, verifies its SHA-256
-//!   against the `SHA256SUMS.txt` published with the release, launches it
-//!   and closes Monto so files can be replaced. User data lives in
-//!   %APPDATA% and is never touched by the installer.
+//! * `install_update` downloads the release zip (`Monto_<v>_x64.zip`),
+//!   verifies it against the SHA-256 digest GitHub reports for the asset,
+//!   extracts it with Windows' built-in `tar.exe`, checks the installer
+//!   against the `SHA256SUMS.txt` inside the zip, launches it and closes
+//!   Monto so files can be replaced. User data lives in %APPDATA% and is
+//!   never touched by the installer.
 //!
 //! Network access only happens when the user explicitly asks for it
 //! (button or the "check automatically" preference).
@@ -26,6 +28,9 @@ pub struct GhAsset {
     pub browser_download_url: String,
     #[serde(default)]
     pub size: u64,
+    /// "sha256:<hex>", computed by GitHub when the asset is uploaded.
+    #[serde(default)]
+    pub digest: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -60,7 +65,8 @@ pub struct UpdateInfo {
     pub installer_name: String,
     pub installer_url: String,
     pub installer_size: u64,
-    pub sums_url: Option<String>,
+    /// SHA-256 of the zip as reported by GitHub (hex, lowercase).
+    pub sha256: Option<String>,
 }
 
 #[derive(Serialize, Clone)]
@@ -73,7 +79,13 @@ fn parse_tag(tag: &str) -> Option<Version> {
     Version::parse(tag.trim().trim_start_matches(['v', 'V'])).ok()
 }
 
-/// Pick the newest release newer than `current` that ships a Windows installer.
+/// Release asset that carries the installer: `Monto_<version>_x64.zip`.
+fn is_package(name: &str) -> bool {
+    let n = name.to_lowercase();
+    n.starts_with("monto_") && n.ends_with("_x64.zip")
+}
+
+/// Pick the newest release newer than `current` that ships a Windows installer zip.
 pub fn pick_update(releases: &[GhRelease], current: &str, include_prerelease: bool) -> Option<UpdateInfo> {
     let cur = Version::parse(current).ok()?;
     releases
@@ -82,7 +94,7 @@ pub fn pick_update(releases: &[GhRelease], current: &str, include_prerelease: bo
         .filter_map(|r| parse_tag(&r.tag_name).map(|v| (v, r)))
         .filter(|(v, _)| *v > cur)
         .filter_map(|(v, r)| {
-            let inst = r.assets.iter().find(|a| a.name.to_lowercase().ends_with("-setup.exe"))?;
+            let inst = r.assets.iter().find(|a| is_package(&a.name))?;
             Some((v, r, inst))
         })
         .max_by(|a, b| a.0.cmp(&b.0))
@@ -97,7 +109,7 @@ pub fn pick_update(releases: &[GhRelease], current: &str, include_prerelease: bo
             installer_name: inst.name.clone(),
             installer_url: inst.browser_download_url.clone(),
             installer_size: inst.size,
-            sums_url: r.assets.iter().find(|a| a.name == "SHA256SUMS.txt").map(|a| a.browser_download_url.clone()),
+            sha256: inst.digest.as_deref().and_then(|d| d.strip_prefix("sha256:")).map(str::to_lowercase),
         })
 }
 
@@ -113,6 +125,26 @@ pub fn expected_hash(sums: &str, file: &str) -> Option<String> {
 
 fn agent() -> ureq::Agent {
     ureq::AgentBuilder::new().timeout_connect(std::time::Duration::from_secs(15)).timeout_read(std::time::Duration::from_secs(60)).build()
+}
+
+/// Unzip the package with Windows' tar.exe and return the verified installer path.
+fn extract_installer(zip: &std::path::Path, dir: &std::path::Path) -> Result<std::path::PathBuf, String> {
+    let out = dir.join("paquete");
+    std::fs::create_dir_all(&out).map_err(|e| e.to_string())?;
+    let tar = std::env::var_os("SystemRoot").map(|r| std::path::PathBuf::from(r).join("System32").join("tar.exe")).unwrap_or_else(|| "tar.exe".into());
+    let st = std::process::Command::new(tar).arg("-xf").arg(zip).arg("-C").arg(&out).status().map_err(|e| format!("No se pudo descomprimir: {e}"))?;
+    if !st.success() { return Err("No se pudo descomprimir el paquete de actualización".into()); }
+    let sums = std::fs::read_to_string(out.join("SHA256SUMS.txt")).map_err(|_| "El paquete no incluye SHA256SUMS.txt")?;
+    let exe = std::fs::read_dir(&out).map_err(|e| e.to_string())?
+        .filter_map(|e| e.ok())
+        .map(|e| e.file_name().to_string_lossy().into_owned())
+        .find(|n| n.to_lowercase().ends_with("-setup.exe"))
+        .ok_or("El paquete no incluye el instalador")?;
+    let expected = expected_hash(&sums, &exe).ok_or("El instalador no figura en SHA256SUMS.txt")?;
+    let path = out.join(&exe);
+    let got = format!("{:x}", Sha256::digest(std::fs::read(&path).map_err(|e| e.to_string())?));
+    if got != expected { return Err("La verificación SHA-256 del instalador falló".into()); }
+    Ok(path)
 }
 
 #[tauri::command]
@@ -142,13 +174,12 @@ pub async fn install_update(app: AppHandle, info: UpdateInfo) -> Result<(), Stri
         if !info.installer_url.starts_with("https://github.com/") && !info.installer_url.starts_with("https://objects.githubusercontent.com/") {
             return Err("Origen de descarga no permitido".into());
         }
-        let sums_url = info.sums_url.clone().ok_or("La versión no publica SHA256SUMS.txt; no se puede verificar la descarga")?;
-        let sums = agent().get(&sums_url).set("User-Agent", UA).call().map_err(|e| e.to_string())?.into_string().map_err(|e| e.to_string())?;
-        let expected = expected_hash(&sums, &info.installer_name).ok_or("El instalador no figura en SHA256SUMS.txt")?;
+        let expected = info.sha256.clone().filter(|h| h.len() == 64).ok_or("GitHub no informó la suma SHA-256 del paquete; no se puede verificar la descarga")?;
 
         let resp = agent().get(&info.installer_url).set("User-Agent", UA).call().map_err(|e| format!("Error al descargar: {e}"))?;
         let total = resp.header("Content-Length").and_then(|v| v.parse().ok()).unwrap_or(info.installer_size);
         let dir = std::env::temp_dir().join("monto-update");
+        let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
         let path = dir.join(&info.installer_name);
         let mut file = std::fs::File::create(&path).map_err(|e| e.to_string())?;
@@ -175,7 +206,7 @@ pub async fn install_update(app: AppHandle, info: UpdateInfo) -> Result<(), Stri
             let _ = std::fs::remove_file(&path);
             return Err("La verificación SHA-256 falló: la descarga está dañada o fue alterada".into());
         }
-        Ok(path)
+        extract_installer(&path, &dir)
     })
     .await
     .map_err(|e| e.to_string())??;
@@ -194,30 +225,30 @@ mod tests {
     fn rel(tag: &str, pre: bool, assets: &[&str]) -> GhRelease {
         GhRelease {
             tag_name: tag.into(), name: None, body: Some(format!("notas {tag}")), prerelease: pre, draft: false, published_at: None, html_url: String::new(),
-            assets: assets.iter().map(|a| GhAsset { name: a.to_string(), browser_download_url: format!("https://github.com/x/{a}"), size: 1 }).collect(),
+            assets: assets.iter().map(|a| GhAsset { name: a.to_string(), browser_download_url: format!("https://github.com/x/{a}"), size: 1, digest: Some(format!("sha256:{}", "A".repeat(64))) }).collect(),
         }
     }
 
     #[test]
     fn picks_newest_stable_or_beta() {
         let rs = vec![
-            rel("v0.4.8-beta.2", true, &["Monto_0.4.8-beta.2_x64-setup.exe", "SHA256SUMS.txt"]),
-            rel("v0.4.8-beta.3", true, &["Monto_0.4.8-beta.3_x64-setup.exe", "SHA256SUMS.txt"]),
-            rel("v0.5.0", false, &["Monto_0.5.0_x64-setup.exe", "SHA256SUMS.txt"]),
-            rel("v0.6.0", false, &["notes.txt"]),
+            rel("v0.4.8-beta.2", true, &["Monto_0.4.8-beta.2_x64.zip"]),
+            rel("v0.4.8-beta.3", true, &["Monto_0.4.8-beta.3_x64.zip"]),
+            rel("v0.5.0", false, &["Monto_0.5.0_x64.zip"]),
+            rel("v0.6.0", false, &["notes.txt", "Monto_0.6.0_x64-setup.exe"]),
         ];
         assert_eq!(pick_update(&rs, "0.4.8-beta.2", true).unwrap().version, "0.5.0");
         assert_eq!(pick_update(&rs[..2], "0.4.8-beta.2", true).unwrap().version, "0.4.8-beta.3");
         assert!(pick_update(&rs[..2], "0.4.8-beta.2", false).is_none());
         assert!(pick_update(&rs, "0.5.0", true).is_none());
         let u = pick_update(&rs, "0.4.8-beta.2", false).unwrap();
-        assert!(u.sums_url.is_some());
-        assert!(u.installer_name.ends_with("-setup.exe"));
+        assert_eq!(u.sha256.as_deref(), Some("a".repeat(64).as_str()));
+        assert_eq!(u.installer_name, "Monto_0.5.0_x64.zip");
     }
 
     #[test]
     fn stable_is_newer_than_its_beta() {
-        let rs = vec![rel("v0.4.8", false, &["Monto_0.4.8_x64-setup.exe"])];
+        let rs = vec![rel("v0.4.8", false, &["Monto_0.4.8_x64.zip"])];
         assert!(pick_update(&rs, "0.4.8-beta.2", false).is_some());
     }
 
@@ -227,5 +258,31 @@ mod tests {
         let sums = format!("{h}  Monto_0.5.0_x64-setup.exe\r\n{}  other.msi\n", "b".repeat(64));
         assert_eq!(expected_hash(&sums, "Monto_0.5.0_x64-setup.exe").as_deref(), Some(h.as_str()));
         assert!(expected_hash(&sums, "missing.exe").is_none());
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn extracts_and_verifies_installer_from_zip() {
+        let dir = std::env::temp_dir().join(format!("monto-zip-test-{}", std::process::id()));
+        let src = dir.join("src");
+        std::fs::create_dir_all(&src).unwrap();
+        let exe = b"fake installer";
+        std::fs::write(src.join("Monto_9.9.9_x64-setup.exe"), exe).unwrap();
+        std::fs::write(src.join("LEEME.txt"), "hola").unwrap();
+        let hash = format!("{:x}", Sha256::digest(exe));
+        std::fs::write(src.join("SHA256SUMS.txt"), format!("{hash}  Monto_9.9.9_x64-setup.exe
+")).unwrap();
+        let zip = dir.join("Monto_9.9.9_x64.zip");
+        let st = std::process::Command::new("tar").args(["-a", "-c", "-f"]).arg(&zip).arg("-C").arg(&src).args(["Monto_9.9.9_x64-setup.exe", "SHA256SUMS.txt", "LEEME.txt"]).status().unwrap();
+        assert!(st.success());
+        let path = extract_installer(&zip, &dir.join("ok")).unwrap();
+        assert_eq!(std::fs::read(&path).unwrap(), exe);
+
+        // A tampered installer must be rejected.
+        std::fs::write(src.join("Monto_9.9.9_x64-setup.exe"), b"tampered").unwrap();
+        let bad = dir.join("bad.zip");
+        std::process::Command::new("tar").args(["-a", "-c", "-f"]).arg(&bad).arg("-C").arg(&src).args(["Monto_9.9.9_x64-setup.exe", "SHA256SUMS.txt"]).status().unwrap();
+        assert!(extract_installer(&bad, &dir.join("bad")).is_err());
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }

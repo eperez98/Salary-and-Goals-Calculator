@@ -74,11 +74,11 @@
 - Copias de seguridad automáticas diarias, manuales, exportación/importación (`.monto`, JSON) y verificación de integridad SQLite.
 
 **Actualizaciones**
-- *Configuración → Actualizaciones*: busca nuevas versiones (estables o Beta) en GitHub Releases, muestra las notas, descarga el instalador, **verifica su SHA-256**, crea una copia de seguridad y actualiza conservando tus datos. La búsqueda automática es opcional.
+- *Configuración → Actualizaciones*: busca nuevas versiones (estables o Beta) en GitHub Releases, muestra las notas, descarga el paquete, **verifica su SHA-256**, crea una copia de seguridad y actualiza conservando tus datos. La búsqueda automática es opcional.
 
 **Idiomas**
 - Interfaz completa en **español** e **inglés**. La primera vez se usa el idioma de Windows; puedes cambiarlo en la configuración inicial o en *Configuración → Apariencia*.
-- El instalador también está disponible en ambos idiomas.
+- El instalador pregunta el idioma (español o inglés).
 
 **Experiencia**
 - Splash animado, configuración inicial guiada, modo claro/oscuro automático según Windows, transiciones, contadores animados, gráficos que se dibujan progresivamente, notificaciones internas y soporte para **reducir el movimiento**.
@@ -98,9 +98,7 @@
 
 Las versiones estables se publican en **[GitHub Releases](https://github.com/eperez98/monto/releases)**:
 
-- `Monto_x.y.z_x64-setup.exe` — instalador recomendado para Windows 10/11, en español o inglés (no requiere administrador).
-- `Monto_x.y.z_x64_es-ES.msi` / `Monto_x.y.z_x64_en-US.msi` — instaladores MSI en español e inglés.
-- `version.json` y `SHA256SUMS.txt` — información de versión y sumas de verificación.
+- `Monto_x.y.z_x64.zip` — descomprímelo y ejecuta `Monto_x.y.z_x64-setup.exe` (Windows 10/11, español o inglés, no requiere administrador). Incluye `SHA256SUMS.txt` para verificar el instalador y `LEEME.txt`.
 
 El instalador crea accesos directos en el menú Inicio y el escritorio, registra el desinstalador en *Configuración → Aplicaciones* y **conserva tus datos al actualizar**. Consulta la [guía de instalación](docs/instalacion.md).
 
@@ -108,7 +106,7 @@ El instalador crea accesos directos en el menú Inicio y el escritorio, registra
 
 | Capa | Tecnología | Motivo |
 |---|---|---|
-| Escritorio | [Tauri 2](https://tauri.app) (Rust + WebView2) | Instalador ligero, permisos explícitos, NSIS/MSI |
+| Escritorio | [Tauri 2](https://tauri.app) (Rust + WebView2) | Instalador NSIS ligero, permisos explícitos |
 | Interfaz | React 18, TypeScript estricto, Vite 7 | Componentes tipados y build rápido |
 | Estilos | Tailwind CSS 4 con tokens de diseño propios | Tema claro/oscuro consistente |
 | Animaciones | Motion (Framer Motion) | Transiciones fluidas con soporte de *reduced motion* |
@@ -156,7 +154,7 @@ Monto no necesita archivos `.env`, claves ni servicios externos.
 ```bash
 npm run lint && npm run typecheck && npm test   # calidad
 npm run build                                   # frontend de producción (dist/)
-npm run tauri build                             # instaladores en src-tauri/target/release/bundle/{nsis,msi}
+npm run tauri build                             # instalador en src-tauri/target/release/bundle/nsis
 npm run icons                                   # regenerar logotipos PNG e iconos de Windows desde los SVG
 ```
 

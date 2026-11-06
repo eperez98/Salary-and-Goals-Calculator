@@ -1,0 +1,24 @@
+MONTO · Finanzas personales y familiares para Panamá
+====================================================
+
+ESPAÑOL
+1. Ejecuta Monto_*_x64-setup.exe y elige el idioma (español o inglés).
+2. Si Windows SmartScreen muestra un aviso: "Más información" > "Ejecutar de todas formas"
+   (el instalador todavía no está firmado).
+3. Para actualizar, ejecuta el instalador nuevo sobre la versión instalada:
+   tus datos en %APPDATA%\com.monto.finanzas se conservan.
+Verificación opcional (PowerShell):
+   Get-FileHash .\Monto_*_x64-setup.exe -Algorithm SHA256
+   y compara el resultado con SHA256SUMS.txt.
+
+ENGLISH
+1. Run Monto_*_x64-setup.exe and choose your language (Spanish or English).
+2. If Windows SmartScreen shows a warning: "More info" > "Run anyway"
+   (the installer is not code-signed yet).
+3. To update, run the new installer over the installed version:
+   your data in %APPDATA%\com.monto.finanzas is kept.
+Optional check (PowerShell):
+   Get-FileHash .\Monto_*_x64-setup.exe -Algorithm SHA256
+   and compare it with SHA256SUMS.txt.
+
+https://github.com/eperez98/monto · Licencia MIT / MIT License
