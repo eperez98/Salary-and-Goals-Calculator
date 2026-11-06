@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag a publicar (por ejemplo v0.4.8-beta.3)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publicar versión estable
+    runs-on: windows-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Verificar que el tag coincide con package.json
+        shell: pwsh
+        run: |
+          $v = (Get-Content package.json | ConvertFrom-Json).version
+          if ("v$v" -ne $env:TAG) { throw "El tag $env:TAG no coincide con la versión v$v de package.json" }
+      - name: Compilar instaladores
+        run: npx tauri build
+      - name: Prueba de instalación
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem src-tauri/target/release/bundle/nsis/*.exe | Select-Object -First 1
+          ./scripts/windows-smoke-test.ps1 -Installer $installer.FullName
+      - name: Preparar archivos de la versión
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force release | Out-Null
+          Copy-Item src-tauri/target/release/bundle/nsis/*.exe release/
+          Copy-Item src-tauri/target/release/bundle/msi/*.msi release/
+          node scripts/release-notes.mjs $env:TAG > release/NOTAS.md
+          $v = $env:TAG.TrimStart('v')
+          @{ name = 'Monto'; version = $v; tag = $env:TAG; date = (Get-Date -Format 'yyyy-MM-dd'); commit = "${{ github.sha }}"; platforms = @('windows-x64') } | ConvertTo-Json | Out-File -Encoding utf8 release/version.json
+          Get-ChildItem release -File | Where-Object { $_.Name -ne 'SHA256SUMS.txt' } | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Out-File -Encoding ascii release/SHA256SUMS.txt
+      - name: Crear GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Monto ${{ env.TAG }}
+          body_path: release/NOTAS.md
+          draft: false
+          prerelease: ${{ contains(env.TAG, '-') }}
+          files: |
+            release/*.exe
+            release/*.msi
+            release/version.json
+            release/SHA256SUMS.txt

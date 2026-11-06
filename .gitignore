@@ -1,0 +1,51 @@
+# Dependencias
+node_modules/
+
+# Compilación
+dist/
+dist-ssr/
+src-tauri/target/
+src-tauri/gen/schemas/
+release/
+*.tsbuildinfo
+
+# Datos personales — NUNCA subir bases de datos ni copias de seguridad
+*.db
+*.db-journal
+*.db.tmp
+*.sqlite
+*.sqlite3
+*.monto
+backups/
+monto-*.csv
+monto-*.xlsx
+monto-*.pdf
+monto-*.json
+
+# Credenciales y secretos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.cer
+tauri.key
+*.secret
+
+# Temporales y sistema
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+coverage/
+playwright-report/
+test-results/
+assets/screenshots/_failure.png

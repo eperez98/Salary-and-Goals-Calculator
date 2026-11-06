@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs><linearGradient id="gold" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#E8930F"/><stop offset="1" stop-color="#FFC94D"/></linearGradient></defs>
+  <g transform="translate(90 20)">
+    <path d="M26 94V36L58 72" stroke="#14304D" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M58 72L92 26V94" stroke="url(#gold)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  <text x="150" y="214" text-anchor="middle" font-family="'Inter Tight Variable','Inter Tight','Segoe UI',sans-serif" font-size="64" font-weight="700" letter-spacing="-3" fill="#14304D">monto</text>
+  <text x="150" y="252" text-anchor="middle" font-family="'Instrument Serif',Georgia,serif" font-style="italic" font-size="26" fill="#5E6B64">tus finanzas, en orden</text>
+</svg>

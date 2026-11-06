@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 140">
+  <defs><linearGradient id="gold" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#E8930F"/><stop offset="1" stop-color="#FFC94D"/></linearGradient></defs>
+  <g transform="translate(4 10)">
+    <path d="M26 94V36L58 72" stroke="#14304D" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M58 72L92 26V94" stroke="url(#gold)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  <text x="128" y="104" font-family="'Inter Tight Variable','Inter Tight','Segoe UI',sans-serif" font-size="92" font-weight="700" letter-spacing="-4" fill="#14304D">monto</text>
+</svg>
