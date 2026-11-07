@@ -8,8 +8,9 @@ import { WrongPasswordError } from './db/crypto';
 import { endSession, getMember, getPrefs, getProfile, listMembers, seedCategories, startSession, verifyMemberPin } from './db/repo/core';
 import { runAutoPost } from './db/repo/planning';
 import { autoBackup } from './services/backup';
-import { checkForUpdate, updatesSupported } from './services/updates';
-import { IS_PRERELEASE, versionLabel } from './lib/version';
+import { checkForUpdate, updatesSupported, type UpdateInfo } from './services/updates';
+import { UpdatePrompt } from './components/layout/UpdatePrompt';
+import { IS_PRERELEASE } from './lib/version';
 import { Splash } from './features/shell/Splash';
 import { LockScreen } from './features/shell/LockScreen';
 import { MemberPicker } from './features/shell/MemberPicker';
@@ -51,6 +52,7 @@ export default function App() {
   const { phase, setPhase, engine, setEngine, bump, setActor, route, fatal, actor, sessionId } = useApp();
   const [status, setStatus] = useState(tr('Preparando…'));
   const [members, setMembers] = useState<Member[]>([]);
+  const [update, setUpdate] = useState<UpdateInfo | null>(null);
   const adapterRef = useRef<StorageAdapter>(defaultAdapter());
   const ok = useMotionOK();
 
@@ -85,13 +87,12 @@ export default function App() {
     useApp.getState().go('dashboard');
     useApp.getState().setScope('personal');
     const posted = runAutoPost(e, { id: m.id, role: m.role });
-    if (posted) useApp.getState().toast({ kind: 'info', title: `${posted} movimiento(s) programado(s) registrado(s)`, body: tr('Se registraron automáticamente los pagos recurrentes vencidos.') });
+    if (posted) useApp.getState().toast({ kind: 'info', title: tr('{posted} movimiento(s) programado(s) registrado(s)', { posted }), body: tr('Se registraron automáticamente los pagos recurrentes vencidos.') });
     void autoBackup(e).catch(() => undefined);
     const prefs = getPrefs(e);
-    if (prefs.autoCheckUpdates && updatesSupported()) {
-      void checkForUpdate(prefs.betaUpdates ?? IS_PRERELEASE).then((u) => {
-        if (u) useApp.getState().toast({ kind: 'info', title: tr('Nueva versión disponible: {v0}', { v0: versionLabel(u.version) }), body: tr('Puedes instalarla sin perder tus datos.'), action: { label: tr('Ver actualización'), onClick: () => { useApp.getState().go('settings'); sessionStorage.setItem('monto:settings-tab', 'updates'); } } });
-      }).catch(() => undefined);
+    // On by default; the user can turn it off in Settings → Updates. Nothing installs without their OK.
+    if (prefs.autoCheckUpdates !== false && updatesSupported()) {
+      void checkForUpdate(prefs.betaUpdates ?? IS_PRERELEASE).then((u) => { if (u) setUpdate(u); }).catch(() => undefined);
     }
     setPhase('app');
   }, []);
@@ -246,6 +247,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      {update && phase === 'app' && <UpdatePrompt info={update} onClose={() => setUpdate(null)} />}
       <Toaster />
     </>
   );

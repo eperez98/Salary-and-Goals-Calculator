@@ -12,7 +12,7 @@ import { LogoMark } from '../../brand/Logo';
 import { formatDate } from '../../lib/dates';
 import type { ProfileMode } from '../../db/types';
 import { APP_VERSION_LABEL, IS_PRERELEASE, versionLabel } from '../../lib/version';
-import { checkForUpdate, installUpdate, updatesSupported, type UpdateInfo } from '../../services/updates';
+import { checkForUpdate, downloadAndInstall, updatesSupported, type UpdateInfo } from '../../services/updates';
 import { lang, locale, setLang, tr } from '../../lib/i18n';
 
 type Tab = 'profile' | 'appearance' | 'security' | 'data' | 'categories' | 'updates' | 'about';
@@ -343,9 +343,7 @@ function UpdatesTab() {
     if (!info) return;
     setState('downloading');
     try {
-      await e.flush();
-      if (canBackup) await createBackup(e, 'antes-de-actualizar');
-      await installUpdate(info, (d, t) => setProgress({ d, t }));
+      await downloadAndInstall(e, canBackup, info, (d, t) => setProgress({ d, t }));
     } catch (x) {
       setErr(errorMessage(x)); setState('error');
       toast({ kind: 'error', title: tr('No se pudo instalar la actualización'), body: errorMessage(x) });
@@ -388,8 +386,8 @@ function UpdatesTab() {
         )}
       </Card>
       <Card hover={false} className="p-6 space-y-5">
-        <Toggle checked={!!prefs.autoCheckUpdates} disabled={!supported} onChange={(v) => mutate((en) => setPrefs(en, { autoCheckUpdates: v }), v ? tr('Búsqueda automática activada') : tr('Búsqueda automática desactivada'))}
-          label={tr('Buscar actualizaciones al iniciar')} description={tr('Consulta la página de versiones de Monto en GitHub. No se envía ningún dato financiero ni personal.')} />
+        <Toggle checked={prefs.autoCheckUpdates !== false} disabled={!supported} onChange={(v) => mutate((en) => setPrefs(en, { autoCheckUpdates: v }), v ? tr('Búsqueda automática activada') : tr('Búsqueda automática desactivada'))}
+          label={tr('Avisarme al iniciar si hay una versión nueva')} description={tr('Consulta la página de versiones de Monto en GitHub y te pregunta si quieres descargarla. Nunca se instala sin tu permiso ni se envía ningún dato financiero o personal.')} />
         <Toggle checked={beta} disabled={!supported} onChange={(v) => mutate((en) => setPrefs(en, { betaUpdates: v }), v ? tr('Canal Beta activado') : tr('Canal estable activado'))}
           label={tr('Recibir versiones Beta')} description={tr('Acceso anticipado a novedades. Pueden contener errores; tus datos se respaldan antes de actualizar.')} />
         <div className="rounded-[14px] bg-surface-2 p-4 text-[12px] text-ink-2 leading-relaxed flex gap-3">

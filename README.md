@@ -75,7 +75,7 @@
 - Copias de seguridad automáticas diarias, manuales, exportación/importación (`.monto`, JSON) y verificación de integridad SQLite.
 
 **Actualizaciones**
-- *Configuración → Actualizaciones*: busca nuevas versiones (estables o Beta) en GitHub Releases, muestra las notas, descarga el paquete, **verifica su SHA-256**, crea una copia de seguridad y actualiza conservando tus datos. La búsqueda automática es opcional.
+- *Configuración → Actualizaciones*: busca nuevas versiones (estables o Beta) en GitHub Releases, muestra las notas, descarga el paquete, **verifica su SHA-256**, crea una copia de seguridad y actualiza conservando tus datos. Al iniciar, Monto te avisa con una ventana si hay una versión nueva y te pregunta si quieres descargarla; nunca se instala sin tu permiso. Puedes desactivar el aviso.
 
 **Idiomas**
 - Interfaz completa en **español** e **inglés**. La primera vez se usa el idioma de Windows; puedes cambiarlo en la configuración inicial o en *Configuración → Apariencia*.

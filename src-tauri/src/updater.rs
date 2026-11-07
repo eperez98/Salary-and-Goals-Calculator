@@ -10,8 +10,8 @@
 //!   Monto so files can be replaced. User data lives in %APPDATA% and is
 //!   never touched by the installer.
 //!
-//! Network access only happens when the user explicitly asks for it
-//! (button or the "check automatically" preference).
+//! Network access only happens at startup (unless the user turns it off)
+//! or when the user presses "Check for updates". Installing always needs their OK.
 
 use semver::Version;
 use serde::{Deserialize, Serialize};

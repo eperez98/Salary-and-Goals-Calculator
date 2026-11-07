@@ -10,6 +10,12 @@ El formato sigue [Keep a Changelog 1.1.0](https://keepachangelog.com/es-ES/1.1.0
 
 ## [Sin publicar]
 
+### Nuevas funcionalidades
+- **Aviso de nueva versión.** Al abrir Monto aparece una ventana si hay una versión nueva en GitHub, con sus notas y dos opciones: *Descargar e instalar* o *Ahora no*. Nada se descarga ni se instala sin tu permiso; con *Ahora no* sigues usando tu versión actual y se te vuelve a preguntar en el próximo inicio.
+
+### Cambios
+- La búsqueda de actualizaciones al iniciar viene **activada** por defecto (antes había que activarla). Se puede desactivar en *Configuración → Actualizaciones*. Solo consulta la página de versiones de GitHub; no envía datos.
+
 ## [0.5.2-beta.5] - 2026-11-06
 
 ### Nuevas funcionalidades
