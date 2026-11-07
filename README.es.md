@@ -17,7 +17,7 @@
 **Ingresos, quincenas, gastos, presupuestos, ahorros y deudas — en balboas y dólares, para ti o para todo tu hogar.**<br />
 Sin nube y sin cuentas en línea: tus datos se quedan en tu equipo.
 
-[Características](#características) · [Capturas](#capturas) · [Descargar](#descargar) · [Desarrollo](#desarrollo) · [Licencia](#licencia)
+[Características](#características) · [Capturas](#capturas) · [Descargar](#descargar) · [Licencia](#licencia)
 
 </div>
 
@@ -153,49 +153,6 @@ El zip incluye también `SHA256SUMS.txt` (para verificar el instalador) y `LEEME
 | Calidad | Vitest, E2E con Playwright, ESLint, GitHub Actions (compilación y prueba de instalación en Windows) |
 
 Más detalles en [docs/arquitectura.md](docs/arquitectura.md) y en las [decisiones de arquitectura](docs/decisiones/).
-
-## Desarrollo
-
-Necesitas Node.js 20 o superior (recomendado 22) y, para la app de escritorio, Rust (`rustup`), Microsoft C++ Build Tools y WebView2.
-
-```bash
-git clone https://github.com/eperez98/monto.git
-cd monto
-npm ci
-npm run dev          # interfaz en el navegador: http://127.0.0.1:1420 (datos en IndexedDB)
-npm run tauri dev    # app de escritorio con recarga en caliente
-```
-
-```bash
-npm run lint && npm run typecheck && npm test   # calidad (53 pruebas)
-npm run i18n:check                              # textos sin traducción al inglés
-node scripts/e2e.mjs                            # recorrido de punta a punta (con npm run dev en marcha)
-npm run tauri build                             # instalador en src-tauri/target/release/bundle/nsis
-```
-
-| Elemento | Ubicación |
-|---|---|
-| Base de datos | `%APPDATA%\com.monto.finanzas\monto.db` |
-| Copias automáticas | `%APPDATA%\com.monto.finanzas\backups\*.monto` |
-| Ventana, permisos y CSP | `src-tauri/tauri.conf.json`, `src-tauri/capabilities/default.json` |
-
-<details>
-<summary><b>Estructura del proyecto</b></summary>
-
-```
-├── src/
-│   ├── domain/        # Lógica pura: salarios, amortización, presupuestos, plan, permisos, recurrencias
-│   ├── db/            # Motor SQLite, migraciones, cifrado, adaptadores y repositorios
-│   ├── features/      # Módulos: resumen, movimientos, cuentas, ingresos, plan, presupuestos, objetivos…
-│   ├── components/    # UI kit, layout y gráficos
-│   ├── lib/           # Dinero, fechas, versión e idiomas (i18n.ts, locales/en.ts)
-│   └── services/      # Exportación (CSV/XLSX/PDF), copias de seguridad, actualizaciones
-├── src-tauri/         # Shell de escritorio (Rust): permisos, actualizador, instalador
-├── assets/            # Logotipos, iconos y capturas
-├── docs/              # Arquitectura, base de datos, manuales y decisiones
-└── .github/workflows/ # CI y publicación de versiones
-```
-</details>
 
 ## Contribuir
 

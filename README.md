@@ -17,7 +17,7 @@
 **Income, paydays, expenses, budgets, savings and debts — in balboas and dollars, for you or your whole household.**<br />
 No cloud, no account: your data stays on your computer.
 
-[Features](#features) · [Screenshots](#screenshots) · [Download](#download) · [Development](#development) · [License](#license)
+[Features](#features) · [Screenshots](#screenshots) · [Download](#download) · [License](#license)
 
 </div>
 
@@ -153,43 +153,6 @@ The zip also includes `SHA256SUMS.txt` (to verify the installer) and `LEEME.txt`
 | Quality | Vitest, Playwright E2E, ESLint, GitHub Actions (build + install test on Windows) |
 
 More in [docs/arquitectura.md](docs/arquitectura.md) and the [architecture decisions](docs/decisiones/).
-
-## Development
-
-Requires Node.js 20+ (22 recommended), and for the desktop app Rust (`rustup`), Microsoft C++ Build Tools and WebView2.
-
-```bash
-git clone https://github.com/eperez98/monto.git
-cd monto
-npm ci
-npm run dev          # UI in the browser at http://127.0.0.1:1420 (data in IndexedDB)
-npm run tauri dev    # desktop app with hot reload
-```
-
-```bash
-npm run lint && npm run typecheck && npm test   # quality checks (53 tests)
-npm run i18n:check                              # strings missing an English translation
-node scripts/e2e.mjs                            # end-to-end run (needs npm run dev)
-npm run tauri build                             # installer in src-tauri/target/release/bundle/nsis
-```
-
-<details>
-<summary><b>Project structure</b></summary>
-
-```
-├── src/
-│   ├── domain/        # Pure logic: salaries, amortization, budgets, plan, permissions, recurrences
-│   ├── db/            # SQLite engine, migrations, encryption, storage adapters, repositories
-│   ├── features/      # Modules: dashboard, transactions, accounts, income, plan, budgets, goals…
-│   ├── components/    # UI kit, layout and charts
-│   ├── lib/           # Money, dates, version and languages (i18n.ts, locales/en.ts)
-│   └── services/      # Export (CSV/XLSX/PDF), backups, updates
-├── src-tauri/         # Desktop shell (Rust): permissions, updater, installer config
-├── assets/            # Logos, icons and screenshots
-├── docs/              # Architecture, database, manuals and decisions (Spanish)
-└── .github/workflows/ # CI and releases
-```
-</details>
 
 ## Contributing
 
