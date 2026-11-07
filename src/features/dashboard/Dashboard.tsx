@@ -88,7 +88,7 @@ export default function Dashboard() {
           <div className="relative mt-6">
             <div className="flex items-center justify-between text-[11.5px] text-white/60 mb-2">
               <span>{tr('Balance de')}{' '}{lang === 'es' ? label.toLowerCase() : label} · <Money cents={t.net} currency={cur} sign className="text-white font-semibold" /></span>
-              <span>{t.income ? `${Math.min(100, pct(t.expense, t.income)).toFixed(0)} % gastado` : tr('Sin ingresos registrados')}</span>
+              <span>{t.income ? tr('{pct} % gastado', { pct: Math.min(100, pct(t.expense, t.income)).toFixed(0) }) : tr('Sin ingresos registrados')}</span>
             </div>
             <Progress value={t.income ? 100 - pct(t.expense, t.income) : 0} color="linear-gradient(90deg,#2FBF85,#7DF0BF)" track="rgb(255 255 255 / 0.12)" height={6} delay={0.3} />
           </div>

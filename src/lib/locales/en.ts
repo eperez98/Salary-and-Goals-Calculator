@@ -1119,4 +1119,5 @@ export const EN: Record<string, string> = {
   "¿Quieres descargarla ahora? Tus datos se conservan y antes se crea una copia de seguridad. Si eliges «Ahora no», seguirás usando tu versión actual.": "Do you want to download it now? Your data is kept and a backup is made first. If you choose “Not now”, you'll keep using your current version.",
   "Avisarme al iniciar si hay una versión nueva": "Tell me at startup when a new version is available",
   "Consulta la página de versiones de Monto en GitHub y te pregunta si quieres descargarla. Nunca se instala sin tu permiso ni se envía ningún dato financiero o personal.": "Checks Monto's releases page on GitHub and asks whether you want to download it. Nothing is installed without your permission and no financial or personal data is sent.",
+  "{pct} % gastado": "{pct}% spent",
 };

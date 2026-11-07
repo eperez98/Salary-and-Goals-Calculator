@@ -1,211 +1,202 @@
 <div align="center">
 
-<img src="assets/brand/logo-horizontal.png" alt="Monto" width="320" />
+**English** · [Español](README.es.md)
 
-### Finanzas personales y familiares para Panamá — en balboas y dólares
+<img src="assets/brand/readme-hero-en.png" alt="Monto: personal and family finances for Panama" width="100%" />
 
-*Ingresos, salarios quincenales, gastos, cuentas, presupuestos, ahorros y deudas bajo control desde un único lugar. Sin nube: tus datos se quedan en tu equipo.*
+<br />
+
+[![Download for Windows](https://img.shields.io/badge/Download%20for%20Windows-0.5.3%20Beta%206-E8930F?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/eperez98/monto/releases)
 
 [![CI](https://github.com/eperez98/monto/actions/workflows/ci.yml/badge.svg)](https://github.com/eperez98/monto/actions/workflows/ci.yml)
-![Versión](https://img.shields.io/badge/versi%C3%B3n-0.5.3%20Beta%206-E8930F)
-![Windows 11](https://img.shields.io/badge/Windows-10%20%7C%2011-12291F)
-![Licencia MIT](https://img.shields.io/badge/licencia-MIT-1F4B39)
-![Offline](https://img.shields.io/badge/funciona-sin%20conexi%C3%B3n-1F4B39)
-![Idiomas](https://img.shields.io/badge/idiomas-espa%C3%B1ol%20%7C%20English-1F4B39)
+![Windows 10 | 11](https://img.shields.io/badge/Windows-10%20%7C%2011-14304D)
+![Offline](https://img.shields.io/badge/works-offline-14304D)
+![English | Español](https://img.shields.io/badge/English%20%7C%20Espa%C3%B1ol-14304D)
+![MIT](https://img.shields.io/badge/license-MIT-14304D)
+
+**Income, paydays, expenses, budgets, savings and debts — in balboas and dollars, for you or your whole household.**<br />
+No cloud, no account: your data stays on your computer.
+
+[Features](#features) · [Screenshots](#screenshots) · [Download](#download) · [Development](#development) · [License](#license)
 
 </div>
 
-![Dashboard de Monto](assets/screenshots/06-dashboard.png)
+---
 
-## Contenido
+## Why Monto
 
-- [Características](#características)
-- [Capturas de pantalla](#capturas-de-pantalla)
-- [Descargar](#descargar)
-- [Tecnologías](#tecnologías)
-- [Requisitos](#requisitos)
-- [Instalación para desarrollo](#instalación-para-desarrollo)
-- [Configuración](#configuración)
-- [Compilación](#compilación)
-- [Guía de uso](#guía-de-uso)
-- [Pruebas](#pruebas)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Contribuir](#contribuir)
-- [Licencia](#licencia)
+<table>
+<tr>
+<td width="33%" valign="top">
 
-## Características
+### 🇵🇦 Made for Panama
+Balboa (`B/.`) and dollar at 1:1 parity, **semi‑monthly paydays**, CSS and Seguro Educativo, 13th‑month pay, Yappy, ACH and Panapass.
 
-**Hecho para Panamá**
-- Balboa (**PAB**, `B/.`) y Dólar (**USD**, `$`) con paridad 1:1. Cada cuenta conserva su moneda y los totales se muestran por separado y combinados.
-- Salario **quincenal** con primera y segunda quincena independientes, días de pago configurables (15 y 30 / último día), adelanto automático cuando el pago cae en fin de semana.
-- Descuentos de ley opcionales (**CSS 9,75 %**, **Seguro Educativo 1,25 %**) y **décimo tercer mes** estimado (15 de abril, agosto y diciembre).
-- Métodos de pago locales (ACH, **Yappy**, efectivo, tarjetas) y categorías como *Peajes (Panapass)*.
+</td>
+<td width="33%" valign="top">
 
-**Ingresos y salarios**
-- Semanal, bisemanal, quincenal, mensual, por horas, variable/freelance u otros.
-- Cálculo automático de ingreso por pago, mensual, anual, promedio real, próxima fecha de pago y total recibido en el año. Ejemplo: B/. 1,500 por quincena → B/. 3,000 al mes → B/. 36,000 al año.
-- **Estimado ≠ recibido**: ningún pago se marca como recibido antes de su fecha ni sin tu confirmación.
+### 👨‍👩‍👧 For the whole household
+Individual, couple or family profiles with roles, shared expenses, who‑owes‑whom and a **Personal / Household** view.
 
-**Finanzas del día a día**
-- Movimientos: ingresos, gastos, transferencias, pagos de tarjeta, préstamos recibidos, abonos y reembolsos, con categoría, cuenta, método de pago, notas, responsable y **comprobantes adjuntos**.
-- Búsqueda, filtros, edición, eliminación, importación CSV y exportación.
-- Cuentas de ahorro, corrientes, efectivo, tarjetas de crédito (con límite y uso) y débito, inversiones.
-- Categorías y **subcategorías** personalizables.
+</td>
+<td width="33%" valign="top">
 
-**Planificación**
-- **Plan mensual**: Monto te pregunta tus gastos del mes uno por uno, los resta de tu ingreso neto y te dice cuánto te queda, si puedes ahorrar y cuánto. Disponible para cada integrante en todos los modos.
-- **Presupuestos** mensuales por categoría con alertas al 70 %, 90 % y 100 %.
-- **Objetivos** de ahorro (emergencia, vehículo, vivienda, vacaciones, educación…) con anillo de progreso animado y celebración al completarlos.
-- **Préstamos y deudas** (personales, hipotecas, auto, tarjetas, deudas entre personas) con cuota, intereses, saldo pendiente y tabla de **amortización**.
-- **Calendario financiero** con cobros, cuotas, pagos recurrentes y recordatorios.
+### 🔒 Private by design
+100 % local SQLite database, optional **AES‑256** encryption, auto‑lock and daily backups. Nothing leaves your PC.
 
-**Familia**
-- Perfil individual, en pareja o familiar con integrantes, avatares y roles (**Administrador, Adulto, Miembro, Solo lectura**) aplicados también en la capa de datos.
-- Vista **Personal / Hogar** con separación clara, gastos compartidos repartidos, distribución de responsabilidades, **deudas entre integrantes** con liquidación y historial del hogar.
+</td>
+</tr>
+</table>
 
-**Inteligencia basada en tus datos**
-- Pagos recurrentes (con registro automático solo en fecha), detección de **gastos duplicados**, alertas, recordatorios, resumen mensual, comparación de hábitos, categorías con gasto elevado y proyecciones de ahorro. Las estimaciones siempre se etiquetan como tales.
+## Screenshots
 
-**Informes**
-- Ingresos, gastos, flujo de efectivo, ahorros, deudas, gastos por categoría, evolución mensual y comparación anual. Exportación a **Excel (.xlsx)**, **CSV** y **PDF**.
+<div align="center">
+<img src="assets/screenshots/en/dashboard.png" alt="Dashboard" width="100%" />
+<sub><b>Overview</b> — available balance, income vs. expenses, spending breakdown, next payday and alerts.</sub>
+</div>
 
-**Privacidad y seguridad**
-- 100 % local y **sin conexión**. Ningún dato financiero sale del equipo; la única conexión opcional es la búsqueda de actualizaciones.
-- Contraseña opcional con cifrado **AES-256-GCM** de toda la base de datos, **bloqueo automático** por inactividad (y `Ctrl + L`), PIN por integrante y registro de sesiones.
-- Copias de seguridad automáticas diarias, manuales, exportación/importación (`.monto`, JSON) y verificación de integridad SQLite.
-
-**Actualizaciones**
-- *Configuración → Actualizaciones*: busca nuevas versiones (estables o Beta) en GitHub Releases, muestra las notas, descarga el paquete, **verifica su SHA-256**, crea una copia de seguridad y actualiza conservando tus datos. Al iniciar, Monto te avisa con una ventana si hay una versión nueva y te pregunta si quieres descargarla; nunca se instala sin tu permiso. Puedes desactivar el aviso.
-
-**Idiomas**
-- Interfaz completa en **español** e **inglés**. La primera vez se usa el idioma de Windows; puedes cambiarlo en la configuración inicial o en *Configuración → Apariencia*.
-- El instalador pregunta el idioma (español o inglés).
-
-**Experiencia**
-- Splash animado, configuración inicial guiada, modo claro (predeterminado) u oscuro con un clic desde la barra superior, o automático según Windows, transiciones, contadores animados, gráficos que se dibujan progresivamente, notificaciones internas y soporte para **reducir el movimiento**.
-
-## Capturas de pantalla
+<br />
 
 | | |
+|:---:|:---:|
+| <img src="assets/screenshots/en/plan.png" alt="Monthly plan" /><br /><sub><b>Monthly plan</b> — your expenses one by one, what's left and how much you can save</sub> | <img src="assets/screenshots/en/income.png" alt="Income" /><br /><sub><b>Income & salary</b> — estimated vs. actually received, pay calendar</sub> |
+| <img src="assets/screenshots/en/transactions.png" alt="Transactions" /><br /><sub><b>Transactions</b> — search, filters, receipts, CSV import/export</sub> | <img src="assets/screenshots/en/accounts.png" alt="Accounts" /><br /><sub><b>Accounts & cards</b> — balances by currency and card usage</sub> |
+| <img src="assets/screenshots/en/budgets.png" alt="Budgets" /><br /><sub><b>Budgets</b> — monthly limits with 70 / 90 / 100 % alerts</sub> | <img src="assets/screenshots/en/goals.png" alt="Goals" /><br /><sub><b>Savings goals</b> — progress, pace and contributions</sub> |
+| <img src="assets/screenshots/en/debts.png" alt="Loans and debts" /><br /><sub><b>Loans & debts</b> — installments, interest and amortization</sub> | <img src="assets/screenshots/en/family.png" alt="Family" /><br /><sub><b>Family</b> — shared expenses, roles and permissions</sub> |
+| <img src="assets/screenshots/en/calendar.png" alt="Calendar" /><br /><sub><b>Calendar</b> — paydays, installments, bills and reminders</sub> | <img src="assets/screenshots/en/reports.png" alt="Reports" /><br /><sub><b>Reports</b> — export to Excel, CSV and PDF</sub> |
+
+<details>
+<summary><b>🌙 Dark mode, guided setup and insights</b></summary>
+<br />
+
+| | |
+|:---:|:---:|
+| <img src="assets/screenshots/en/dashboard-dark.png" alt="Dark mode" /><br /><sub>Light and dark mode with one click</sub> | <img src="assets/screenshots/en/plan-dark.png" alt="Monthly plan in dark mode" /><br /><sub>Monthly plan in dark mode</sub> |
+| <img src="assets/screenshots/en/onboarding-salary.png" alt="Guided setup: salary" /><br /><sub>Guided setup: take‑home pay with live monthly and annual totals</sub> | <img src="assets/screenshots/en/onboarding-expenses.png" alt="Guided setup: expenses" /><br /><sub>Guided setup: monthly expenses and savings potential</sub> |
+| <img src="assets/screenshots/en/insights.png" alt="Insights" /><br /><sub>Insights based only on your own data</sub> | <img src="assets/screenshots/en/onboarding-welcome.png" alt="Welcome" /><br /><sub>Welcome screen with language and theme switch</sub> |
+
+</details>
+
+<sub>Screenshots use fictional demo data. Regenerate them with `node scripts/screenshots.mjs`.</sub>
+
+## Features
+
+<details open>
+<summary><b>Income and salary</b></summary>
+
+- Weekly, biweekly, **semi‑monthly** (first and second payday can differ), monthly, hourly, variable/freelance.
+- Pay per payday, monthly, annual and real average, next pay date and total received this year.
+- Optional statutory deductions (**CSS 9.75 %**, **Seguro Educativo 1.25 %**) and estimated **13th‑month pay** (April, August, December).
+- **Estimated ≠ received:** a payment only counts once you confirm it, never with a future date.
+</details>
+
+<details>
+<summary><b>Monthly plan</b></summary>
+
+- Monto asks for your monthly expenses **one at a time** (housing, utilities, internet, food, transport, loans, cards, health, education, entertainment…) and lets you add your own.
+- It subtracts them from your net monthly income and shows the **money left over**, whether you **can save** and **how much**.
+- Available to every member in individual, couple and family modes.
+</details>
+
+<details>
+<summary><b>Everyday money</b></summary>
+
+- Income, expenses, transfers, card payments, loans, refunds — with category, account, payment method (ACH, **Yappy**, cash, cards), notes, member and **attached receipts**.
+- Search, filters, CSV import and export. Savings, checking, cash, credit/debit cards and investments in PAB or USD.
+- Custom categories and subcategories.
+</details>
+
+<details>
+<summary><b>Planning</b></summary>
+
+- **Budgets** per category with alerts at 70, 90 and 100 %.
+- **Savings goals** with progress rings and a celebration when you reach them.
+- **Loans and debts** with installment, interest, outstanding balance and **amortization schedule**.
+- **Financial calendar** with paydays, installments, recurring payments and reminders.
+</details>
+
+<details>
+<summary><b>Family</b></summary>
+
+- Members with avatars and roles (**Admin, Adult, Member, Read‑only**) enforced in the data layer too.
+- **Personal / Household** view, shared expenses split between members, debts between members with settlements, household history.
+</details>
+
+<details>
+<summary><b>Reports, insights and privacy</b></summary>
+
+- Income, expenses, cash flow, savings, debts, by category, monthly trend and year‑over‑year. Export to **Excel**, **CSV** and **PDF**.
+- Duplicate detection, budget alerts, payment reminders, spending habits and savings projections — always labeled as estimates.
+- Optional password with **AES‑256‑GCM** encryption, auto‑lock (`Ctrl + L`), per‑member PIN, session log, daily and manual backups, integrity check.
+- **Updates:** at startup Monto tells you when a new version is out and asks whether to download it. Nothing installs without your OK; the installer is verified with SHA‑256 and your data is backed up first.
+</details>
+
+## Download
+
+1. Go to **[Releases](https://github.com/eperez98/monto/releases)** and download `Monto_x.y.z_x64.zip`.
+2. Unzip it and run `Monto_x.y.z_x64-setup.exe`. Choose **English** or **Español**. No administrator rights needed.
+3. Windows SmartScreen may warn you because the installer isn't code‑signed yet: **More info → Run anyway**.
+
+The zip also includes `SHA256SUMS.txt` (to verify the installer) and `LEEME.txt`. Updating keeps your data in `%APPDATA%\com.monto.finanzas`. See the [installation guide](docs/instalacion.md).
+
+**Requirements:** Windows 10 (1803+) or 11, 64‑bit. WebView2 ships with Windows 11; the installer adds it if missing.
+
+## Tech stack
+
+| Layer | Technology |
 |---|---|
-| ![Configuración inicial](assets/screenshots/03-onboarding-salary.png) Configuración guiada del salario | ![Ingresos](assets/screenshots/09-income.png) Ingresos: estimado vs. recibido |
-| ![Movimiento](assets/screenshots/05-new-transaction.png) Registro de movimientos | ![Cuentas](assets/screenshots/08-accounts.png) Cuentas y tarjetas |
-| ![Presupuestos](assets/screenshots/10-budgets.png) Presupuestos con alertas | ![Objetivos](assets/screenshots/11-goals.png) Objetivos de ahorro |
-| ![Familia](assets/screenshots/13-family.png) Finanzas familiares | ![Informes](assets/screenshots/15-reports.png) Informes exportables |
-| ![Calendario](assets/screenshots/14-calendar.png) Calendario financiero | ![Modo oscuro](assets/screenshots/17-dashboard-dark.png) Modo oscuro |
-| ![Plan mensual](assets/screenshots/03c-plan.png) Plan mensual: gastos uno por uno y ahorro posible | ![English](assets/screenshots/20-dashboard-en.png) Interfaz en inglés |
+| Desktop | [Tauri 2](https://tauri.app) (Rust + WebView2), NSIS installer |
+| UI | React 18, TypeScript (strict), Vite 7, Tailwind CSS 4, Motion, Recharts |
+| Data | SQLite via sql.js (WebAssembly), Zod validation, Zustand state |
+| Export | ExcelJS, jsPDF + AutoTable |
+| i18n | Own lightweight system — Spanish source strings, English dictionary |
+| Quality | Vitest, Playwright E2E, ESLint, GitHub Actions (build + install test on Windows) |
 
-## Descargar
+More in [docs/arquitectura.md](docs/arquitectura.md) and the [architecture decisions](docs/decisiones/).
 
-Las versiones estables se publican en **[GitHub Releases](https://github.com/eperez98/monto/releases)**:
+## Development
 
-- `Monto_x.y.z_x64.zip` — descomprímelo y ejecuta `Monto_x.y.z_x64-setup.exe` (Windows 10/11, español o inglés, no requiere administrador). Incluye `SHA256SUMS.txt` para verificar el instalador y `LEEME.txt`.
-
-El instalador crea accesos directos en el menú Inicio y el escritorio, registra el desinstalador en *Configuración → Aplicaciones* y **conserva tus datos al actualizar**. Consulta la [guía de instalación](docs/instalacion.md).
-
-## Tecnologías
-
-| Capa | Tecnología | Motivo |
-|---|---|---|
-| Escritorio | [Tauri 2](https://tauri.app) (Rust + WebView2) | Instalador NSIS ligero, permisos explícitos |
-| Interfaz | React 18, TypeScript estricto, Vite 7 | Componentes tipados y build rápido |
-| Estilos | Tailwind CSS 4 con tokens de diseño propios | Tema claro/oscuro consistente |
-| Animaciones | Motion (Framer Motion) | Transiciones fluidas con soporte de *reduced motion* |
-| Gráficos | Recharts | Gráficos interactivos y animados |
-| Base de datos | SQLite (sql.js / WebAssembly) | Archivo SQLite local, sin servidor |
-| Validación | Zod | Validación en formularios y en la capa de datos |
-| Estado | Zustand | Estado global mínimo |
-| Exportación | ExcelJS, jsPDF + AutoTable | XLSX y PDF generados localmente |
-| Calidad | Vitest, Playwright, ESLint, GitHub Actions | Pruebas unitarias, de integración y E2E |
-
-Detalles en [docs/arquitectura.md](docs/arquitectura.md) y [decisiones de arquitectura](docs/decisiones/).
-
-## Requisitos
-
-**Para usar la aplicación:** Windows 10 (1803+) u 11 de 64 bits. WebView2 viene preinstalado en Windows 11; el instalador lo instala si falta.
-
-**Para desarrollar:**
-- Node.js 20 o superior (recomendado 22) y npm.
-- Rust estable (`rustup`) — solo para compilar la app de escritorio.
-- Windows: *Microsoft C++ Build Tools* y WebView2. Linux: `libwebkit2gtk-4.1-dev`, `libgtk-3-dev`, `librsvg2-dev` ([prerrequisitos de Tauri](https://tauri.app/start/prerequisites/)).
-
-## Instalación para desarrollo
+Requires Node.js 20+ (22 recommended), and for the desktop app Rust (`rustup`), Microsoft C++ Build Tools and WebView2.
 
 ```bash
-git clone https://github.com/eperez98/monto.git monto
+git clone https://github.com/eperez98/monto.git
 cd monto
 npm ci
-npm run dev          # interfaz en el navegador: http://127.0.0.1:1420 (datos en IndexedDB)
-npm run tauri dev    # aplicación de escritorio con recarga en caliente
+npm run dev          # UI in the browser at http://127.0.0.1:1420 (data in IndexedDB)
+npm run tauri dev    # desktop app with hot reload
 ```
-
-## Configuración
-
-Monto no necesita archivos `.env`, claves ni servicios externos.
-
-| Elemento | Ubicación |
-|---|---|
-| Base de datos | `%APPDATA%\com.monto.finanzas\monto.db` |
-| Copias automáticas | `%APPDATA%\com.monto.finanzas\backups\*.monto` |
-| Ventana, permisos y CSP | `src-tauri/tauri.conf.json`, `src-tauri/capabilities/default.json` |
-| Tema, animaciones, bloqueo | Dentro de la app: *Configuración* |
-
-## Compilación
 
 ```bash
-npm run lint && npm run typecheck && npm test   # calidad
-npm run build                                   # frontend de producción (dist/)
-npm run tauri build                             # instalador en src-tauri/target/release/bundle/nsis
-npm run icons                                   # regenerar logotipos PNG e iconos de Windows desde los SVG
+npm run lint && npm run typecheck && npm test   # quality checks (53 tests)
+npm run i18n:check                              # strings missing an English translation
+node scripts/e2e.mjs                            # end-to-end run (needs npm run dev)
+npm run tauri build                             # installer in src-tauri/target/release/bundle/nsis
 ```
 
-El instalador de Windows debe generarse en Windows. El flujo [`CI`](.github/workflows/ci.yml) lo compila en `windows-latest`, lo **instala en silencio, ejecuta la app, verifica que cree su base de datos SQLite, la desinstala y comprueba que los datos del usuario se conservan**.
-
-## Guía de uso
-
-1. **Primer inicio:** el asistente pregunta tu nombre, si usarás Monto de forma individual, en pareja o en familia, la moneda principal, cómo cobras (el salario neto, con cálculo en vivo del ingreso mensual y anual), tus gastos del mes uno por uno, tu cuenta principal y si quieres una contraseña.
-2. **Registra movimientos** con el botón *Movimiento* o `Ctrl + N`.
-3. **Confirma tus cobros** en *Ingresos y salario* cuando el dinero llegue a tu cuenta.
-4. **Planifica** con presupuestos, objetivos y pagos recurrentes en el calendario.
-5. **Hogar:** cambia a la vista *Hogar* para gastos compartidos; repártelos entre integrantes y salda deudas en *Familia*.
-6. **Exporta** informes desde *Informes* y crea copias en *Configuración → Datos y copias*.
-
-Manual completo: [docs/manual-de-usuario.md](docs/manual-de-usuario.md).
-
-## Pruebas
-
-```bash
-npm test                         # 53 pruebas: cálculos, SQLite real, cifrado, permisos, persistencia, traducciones, plan mensual
-npm run i18n:check               # lista los textos sin traducción al inglés
-npm run dev & npm run e2e        # recorrido E2E en Chromium (onboarding, CRUD, exportación, persistencia, permisos)
-node scripts/e2e.mjs --shots     # además regenera las capturas de assets/screenshots
-```
-
-## Estructura del proyecto
+<details>
+<summary><b>Project structure</b></summary>
 
 ```
 ├── src/
-│   ├── domain/        # Lógica pura: salarios, amortización, presupuestos, permisos, recurrencias, análisis
-│   ├── db/            # Motor SQLite, migraciones, cifrado, adaptadores de almacenamiento y repositorios
-│   ├── features/      # Módulos: dashboard, movimientos, cuentas, ingresos, presupuestos, objetivos, deudas…
-│   ├── components/    # UI kit, layout y gráficos
-│   ├── icons/         # Sistema de iconos propio
-│   ├── lib/           # Dinero, fechas, versión e idiomas (i18n.ts, locales/en.ts)
-│   └── services/      # Exportación (CSV/XLSX/PDF), copias de seguridad, archivos
-├── src-tauri/         # Shell de escritorio (Rust), permisos, iconos y configuración del instalador
-├── assets/            # Logotipos, iconos y capturas
-├── docs/              # Arquitectura, base de datos, manuales y decisiones
-└── .github/workflows/ # CI y publicación de versiones
+│   ├── domain/        # Pure logic: salaries, amortization, budgets, plan, permissions, recurrences
+│   ├── db/            # SQLite engine, migrations, encryption, storage adapters, repositories
+│   ├── features/      # Modules: dashboard, transactions, accounts, income, plan, budgets, goals…
+│   ├── components/    # UI kit, layout and charts
+│   ├── lib/           # Money, dates, version and languages (i18n.ts, locales/en.ts)
+│   └── services/      # Export (CSV/XLSX/PDF), backups, updates
+├── src-tauri/         # Desktop shell (Rust): permissions, updater, installer config
+├── assets/            # Logos, icons and screenshots
+├── docs/              # Architecture, database, manuals and decisions (Spanish)
+└── .github/workflows/ # CI and releases
 ```
+</details>
 
-## Contribuir
+## Contributing
 
-Las contribuciones son bienvenidas. Lee [CONTRIBUTING.md](CONTRIBUTING.md) para el flujo de ramas, convenciones y requisitos de los Pull Requests, y [SECURITY.md](SECURITY.md) para reportar vulnerabilidades. Los cambios se registran en [CHANGELOG.md](CHANGELOG.md) siguiendo [Semantic Versioning](https://semver.org/lang/es/).
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Changes are tracked in [CHANGELOG.md](CHANGELOG.md) using [Semantic Versioning](https://semver.org/).
 
-## Licencia
+## License
 
-Distribuido bajo la licencia **MIT**. Consulta [LICENSE](LICENSE). © 2026 Erick Arturo Pérez Cazorla.
+**MIT** — see [LICENSE](LICENSE). © 2026 Erick Arturo Pérez Cazorla.
 
----
-
-<div align="center"><sub>Monto · Hecho en Panamá 🇵🇦</sub></div>
+<div align="center"><br /><sub>Monto · Made in Panama 🇵🇦</sub></div>

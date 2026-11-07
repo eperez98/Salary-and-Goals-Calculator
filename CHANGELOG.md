@@ -10,6 +10,10 @@ El formato sigue [Keep a Changelog 1.1.0](https://keepachangelog.com/es-ES/1.1.0
 
 ## [Sin publicar]
 
+### Documentación
+- README nuevo en inglés (`README.md`) y español (`README.es.md`) con portada, galería de capturas y secciones plegables.
+- Capturas generadas con datos ficticios por `npm run screenshots` (`scripts/screenshots.mjs`), en ambos idiomas y en modo claro y oscuro.
+
 ## [0.5.3-beta.6] - 2026-11-07
 
 ### Nuevas funcionalidades

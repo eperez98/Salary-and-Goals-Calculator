@@ -6,7 +6,7 @@ const { chromium } = createRequire(import.meta.url)('playwright');
 
 const URL = process.env.E2E_URL ?? 'http://127.0.0.1:1420/';
 const SHOTS = process.argv.includes('--shots');
-const out = 'assets/screenshots';
+const out = process.env.SHOTS_DIR ?? 'test-results/e2e'; // README images come from scripts/screenshots.mjs
 mkdirSync(out, { recursive: true });
 const errors = [];
 const step = (m) => console.log('•', m);
