@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import confetti from 'canvas-confetti';
-import { Button, ChoiceCard, Segmented, Field, Input, MoneyInput, Select, Toggle, useMotionOK, ease } from '../../components/ui';
+import { Button, ChoiceCard, Field, Input, MoneyInput, Select, Toggle, useMotionOK, ease } from '../../components/ui';
 import { LogoMark } from '../../brand/Logo';
 import { Icon } from '../../icons';
 import { IncomeConfigForm, emptyDraft, draftToConfig, type IncomeDraft } from '../income/IncomeConfigForm';
@@ -11,13 +11,14 @@ import { ExpensePlanner } from '../plan/ExpensePlanner';
 import { estimateIncome } from '../../domain/salary';
 import type { PlanItem } from '../../domain/plan';
 import { createAccount } from '../../db/repo/finance';
-import { createMember, seedCategories, setPrefs, setProfile } from '../../db/repo/core';
+import { createMember, getPrefs, seedCategories, setPrefs, setProfile } from '../../db/repo/core';
+import { QuickPrefs } from '../../components/layout/QuickPrefs';
 import { parseMoney, type Currency } from '../../lib/money';
 import { today } from '../../lib/dates';
 import type { Engine } from '../../db/engine';
 import type { AccountType, Member, ProfileMode } from '../../db/types';
 import { errorMessage } from '../../hooks/useDb';
-import { lang, setLang, tr } from '../../lib/i18n';
+import { tr } from '../../lib/i18n';
 
 const BANKS = ['Banco General', 'Banistmo', 'BAC Credomatic', 'Banco Nacional de Panamá', 'Caja de Ahorros', 'Global Bank', 'Multibank', 'Banesco', 'St. Georges Bank', 'Credicorp Bank', tr('Otro')];
 const STEPS = [tr('Bienvenida'), tr('Perfil'), tr('Moneda'), tr('Ingresos'), tr('Gastos'), tr('Cuenta'), tr('Seguridad'), tr('Listo')];
@@ -74,7 +75,7 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
         const acc = createAccount(engine, actor, { name: accName.trim() || tr('Cuenta principal'), type: accType, currency, initialBalance: parseMoney(accBalance || '0'), institution: BANKS.includes(accName) ? accName : null, ownerMemberId: mode === 'individual' ? null : owner.id });
         if (plan.length) saveExpensePlan(engine, actor, plan);
         if (!skipIncome) createIncomeSource(engine, actor, { name: employer.trim() || tr('Salario'), config: draftToConfig(income), currency, accountId: acc.id, startDate: today() });
-        setPrefs(engine, { theme: 'system', reducedMotion: 'system', autoLockMinutes: usePw ? 5 : 0, showBothCurrencies: true });
+        setPrefs(engine, { theme: getPrefs(engine).theme, reducedMotion: 'system', autoLockMinutes: usePw ? 5 : 0, showBothCurrencies: true });
         setProfile(engine, { name: name.trim(), mode, primaryCurrency: currency, onboarded: true, householdName: household.trim() || undefined });
       });
       if (usePw) await engine.setPassword(pw);
@@ -115,6 +116,7 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
 
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-[680px] mx-auto px-10 py-12 min-h-full flex flex-col">
+          <div className="flex justify-end -mt-4 mb-6"><QuickPrefs /></div>
           <div className="h-1 rounded-full bg-surface-3 overflow-hidden mb-10"><motion.div className="h-full bg-emerald rounded-full" animate={{ width: `${(step / (STEPS.length - 1)) * 100}%` }} transition={{ duration: 0.5, ease }} /></div>
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div key={step} custom={dir} initial={ok ? { opacity: 0, x: 40 * dir } : false} animate={{ opacity: 1, x: 0 }} exit={ok ? { opacity: 0, x: -40 * dir } : { opacity: 0 }} transition={{ duration: 0.35, ease }} className="flex-1">
@@ -123,7 +125,6 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
                   <LogoMark size={64} animated={ok} className="text-brand dark:text-ink" />
                   <h1 className="text-[44px] font-semibold tracking-[-0.05em] leading-[1.05] mt-8">{tr('Bienvenido a Monto')}</h1>
                   <p className="serif text-[22px] text-ink-2 mt-2">{tr('Ingresos, gastos, ahorros y deudas bajo control, en balboas y dólares.')}</p>
-                  <Segmented className="mt-6" size="sm" value={lang} onChange={(v) => { if (v !== lang) setLang(v); }} options={[{ value: 'es', label: 'Español' }, { value: 'en', label: 'English' }]} />
                   <div className="grid grid-cols-3 gap-3 mt-10">
                     {[['salary', tr('Quincenas claras'), tr('Calcula tu ingreso mensual y anual real.')], ['family', tr('Para todo el hogar'), tr('Individual, en pareja o en familia.')], ['shield', tr('Privado y local'), tr('Sin nube. Cifrado opcional.')]].map(([i, t, d]) => (
                       <div key={t} className="rounded-[18px] bg-surface border border-line p-4"><Icon name={i} size={22} active className="text-emerald" /><p className="text-[13.5px] font-semibold mt-3">{t}</p><p className="text-[12px] text-muted mt-1">{d}</p></div>

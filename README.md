@@ -82,7 +82,7 @@
 - El instalador pregunta el idioma (español o inglés).
 
 **Experiencia**
-- Splash animado, configuración inicial guiada, modo claro/oscuro automático según Windows, transiciones, contadores animados, gráficos que se dibujan progresivamente, notificaciones internas y soporte para **reducir el movimiento**.
+- Splash animado, configuración inicial guiada, modo claro (predeterminado) u oscuro con un clic desde la barra superior, o automático según Windows, transiciones, contadores animados, gráficos que se dibujan progresivamente, notificaciones internas y soporte para **reducir el movimiento**.
 
 ## Capturas de pantalla
 

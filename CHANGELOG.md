@@ -15,8 +15,10 @@ El formato sigue [Keep a Changelog 1.1.0](https://keepachangelog.com/es-ES/1.1.0
 ### Nuevas funcionalidades
 - **Plan mensual de gastos** (nuevo módulo *Plan mensual*, disponible en los modos individual, pareja y familia). Monto pregunta los gastos del mes uno por uno (vivienda, luz, agua, gas, internet, alimentación, transporte, préstamos, tarjetas, salud, educación y entretenimiento) y permite añadir otros. Al terminar resta los gastos del ingreso mensual neto de la persona y muestra el fondo restante, si puede ahorrar y cuánto al mes. Cada integrante tiene su propio plan.
 - El plan también forma parte de la configuración inicial, como paso *Gastos* después de *Ingresos*.
+- **Modo claro y oscuro con un clic** y **selector de idioma (ES/EN)** en la barra superior y desde la primera pantalla de la configuración inicial. *Configuración → Apariencia* conserva además la opción *Sistema*.
 
 ### Cambios
+- La primera vez que se abre, Monto arranca en **modo claro** (antes seguía el tema de Windows). Las instalaciones existentes conservan el tema que tenían.
 - En la configuración inicial el salario se escribe **neto** (lo que recibes, ya con los descuentos). Ese paso ya no muestra las opciones de descuentos de ley; siguen disponibles al editar la fuente de ingreso en *Ingresos y salario*.
 
 ## [0.4.8-beta.3] - 2026-11-06

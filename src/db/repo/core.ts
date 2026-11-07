@@ -17,7 +17,7 @@ export function setSetting(e: Engine, key: string, value: unknown) {
 }
 
 export const DEFAULT_PROFILE: Profile = { name: '', mode: 'individual', primaryCurrency: 'PAB', onboarded: false };
-export const DEFAULT_PREFS: Preferences = { theme: 'system', reducedMotion: 'system', autoLockMinutes: 5, showBothCurrencies: true };
+export const DEFAULT_PREFS: Preferences = { theme: 'light', reducedMotion: 'system', autoLockMinutes: 5, showBothCurrencies: true };
 export const getProfile = (e: Engine) => getSetting<Profile>(e, 'profile', DEFAULT_PROFILE);
 export const getPrefs = (e: Engine) => getSetting<Preferences>(e, 'preferences', DEFAULT_PREFS);
 export const setPrefs = (e: Engine, p: Partial<Preferences>) => setSetting(e, 'preferences', { ...getPrefs(e), ...p });

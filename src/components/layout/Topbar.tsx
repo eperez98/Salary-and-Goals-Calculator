@@ -6,6 +6,7 @@ import { Button, IconButton, Segmented, Input, Modal } from '../ui';
 import { formatMonth, greeting, monthKey, today, type PeriodKind } from '../../lib/dates';
 import { Icon } from '../../icons';
 import { tr } from '../../lib/i18n';
+import { QuickPrefs } from './QuickPrefs';
 
 export const PERIODS: Array<{ value: PeriodKind; label: string }> = [
   { value: 'day', label: tr('Día') }, { value: 'week', label: tr('Semana') }, { value: 'month', label: tr('Mes') }, { value: 'quarter', label: tr('Trimestre') }, { value: 'year', label: tr('Año') }, { value: 'custom', label: tr('Rango') },
@@ -42,6 +43,7 @@ export function Topbar() {
       {showPeriod && (
         <Segmented size="sm" layoutId="period" value={period} onChange={(v) => (v === 'custom' ? setRangeOpen(true) : setPeriod(v))} options={PERIODS} />
       )}
+      <QuickPrefs />
       <IconButton icon="bell" label={tr('Notificaciones')} badge={count} onClick={() => setNotif(true)} />
       {canCreate && <Button icon="plus" onClick={() => openTx()}>{tr('Movimiento')}</Button>}
       <Modal open={rangeOpen} onClose={() => setRangeOpen(false)} title={tr('Rango personalizado')} width={420} icon="calendar"

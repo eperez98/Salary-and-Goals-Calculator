@@ -27,7 +27,15 @@ try {
   await page.waitForTimeout(700);
   await shot('01-splash');
   await page.getByText('Bienvenido a Monto').waitFor({ timeout: 15000 });
+  await page.waitForTimeout(1200);
   await shot('02-onboarding');
+  assert(!(await page.evaluate(() => document.documentElement.classList.contains('dark'))), 'el primer arranque usa el modo claro');
+  await page.getByRole('button', { name: 'Modo oscuro' }).click();
+  await page.waitForFunction(() => document.documentElement.classList.contains('dark'));
+  await page.getByRole('button', { name: 'Modo claro' }).click();
+  await page.waitForFunction(() => !document.documentElement.classList.contains('dark'));
+  assert(await page.getByRole('tab', { name: 'EN', exact: true }).isVisible(), 'selector de idioma visible desde el primer arranque');
+  assert(true, 'cambio rápido de modo claro/oscuro');
   await click('Comenzar');
   step('Onboarding: profile');
   await page.getByPlaceholder('Ej. Carlos').fill('Carlos');
