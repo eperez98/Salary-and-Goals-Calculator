@@ -7,7 +7,7 @@
 *Ingresos, salarios quincenales, gastos, cuentas, presupuestos, ahorros y deudas bajo control desde un único lugar. Sin nube: tus datos se quedan en tu equipo.*
 
 [![CI](https://github.com/eperez98/monto/actions/workflows/ci.yml/badge.svg)](https://github.com/eperez98/monto/actions/workflows/ci.yml)
-![Versión](https://img.shields.io/badge/versi%C3%B3n-0.5.2%20Beta%205-E8930F)
+![Versión](https://img.shields.io/badge/versi%C3%B3n-0.5.3%20Beta%206-E8930F)
 ![Windows 11](https://img.shields.io/badge/Windows-10%20%7C%2011-12291F)
 ![Licencia MIT](https://img.shields.io/badge/licencia-MIT-1F4B39)
 ![Offline](https://img.shields.io/badge/funciona-sin%20conexi%C3%B3n-1F4B39)

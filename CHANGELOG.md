@@ -10,6 +10,8 @@ El formato sigue [Keep a Changelog 1.1.0](https://keepachangelog.com/es-ES/1.1.0
 
 ## [Sin publicar]
 
+## [0.5.3-beta.6] - 2026-11-07
+
 ### Nuevas funcionalidades
 - **Aviso de nueva versión.** Al abrir Monto aparece una ventana si hay una versión nueva en GitHub, con sus notas y dos opciones: *Descargar e instalar* o *Ahora no*. Nada se descarga ni se instala sin tu permiso; con *Ahora no* sigues usando tu versión actual y se te vuelve a preguntar en el próximo inicio.
 
@@ -95,7 +97,8 @@ Primera versión funcional de **Monto**, una aplicación nueva que reemplaza por
 - Los datos de prueba de la compilación interna *Balbo* (`com.balbo.finanzas`) no se migran.
 - Se elimina la aplicación anterior en Python (`SalaryGoals_Modern.py`). Sus datos no se migran.
 
-[Sin publicar]: https://github.com/eperez98/monto/compare/v0.5.2-beta.5...HEAD
+[Sin publicar]: https://github.com/eperez98/monto/compare/v0.5.3-beta.6...HEAD
+[0.5.3-beta.6]: https://github.com/eperez98/monto/releases/tag/v0.5.3-beta.6
 [0.5.2-beta.5]: https://github.com/eperez98/monto/releases/tag/v0.5.2-beta.5
 [0.4.8-beta.3]: https://github.com/eperez98/monto/releases/tag/v0.4.8-beta.3
 [0.4.8-beta.2]: https://github.com/eperez98/monto/releases/tag/v0.4.8-beta.2
