@@ -10,6 +10,16 @@ El formato sigue [Keep a Changelog 1.1.0](https://keepachangelog.com/es-ES/1.1.0
 
 ## [Sin publicar]
 
+## [0.5.4-beta.7] - 2026-11-07
+
+### Nuevas funcionalidades
+- **Exportar a Notion.** En *Informes* hay un botón *Notion* que genera un archivo Markdown con tablas reales: al importarlo en Notion (*Importar → Markdown*) o pegarlo, cada tabla aparece como tabla de Notion.
+- **Todos los datos.** Nuevo informe que reúne en un solo archivo tus movimientos, cuentas, ingresos, plan mensual, presupuestos, objetivos, préstamos y pagos recurrentes, listo para Excel, PDF, Notion o CSV. También se abre desde *Configuración → Datos y copias → Exportar tablas*.
+
+### Cambios
+- **Diseño minimalista y elegante en las exportaciones.** PDF: página blanca, texto en azul medianoche, líneas finas, un acento dorado, resumen con cifras clave, encabezados que se repiten en cada página y negativos en rojo suave. Excel: sin cuadrícula, encabezado con línea inferior, filas separadas por líneas finas, columnas ajustadas al contenido, **orden y filtros** en cada tabla, encabezado fijo y lista para imprimir.
+- Se tradujeron algunos textos que aparecían en español con la interfaz en inglés.
+
 ### Documentación
 - README nuevo en inglés (`README.md`) y español (`README.es.md`) con portada, galería de capturas y secciones plegables.
 - Capturas generadas con datos ficticios por `npm run screenshots` (`scripts/screenshots.mjs`), en ambos idiomas y en modo claro y oscuro.
@@ -101,7 +111,8 @@ Primera versión funcional de **Monto**, una aplicación nueva que reemplaza por
 - Los datos de prueba de la compilación interna *Balbo* (`com.balbo.finanzas`) no se migran.
 - Se elimina la aplicación anterior en Python (`SalaryGoals_Modern.py`). Sus datos no se migran.
 
-[Sin publicar]: https://github.com/eperez98/monto/compare/v0.5.3-beta.6...HEAD
+[Sin publicar]: https://github.com/eperez98/monto/compare/v0.5.4-beta.7...HEAD
+[0.5.4-beta.7]: https://github.com/eperez98/monto/releases/tag/v0.5.4-beta.7
 [0.5.3-beta.6]: https://github.com/eperez98/monto/releases/tag/v0.5.3-beta.6
 [0.5.2-beta.5]: https://github.com/eperez98/monto/releases/tag/v0.5.2-beta.5
 [0.4.8-beta.3]: https://github.com/eperez98/monto/releases/tag/v0.4.8-beta.3

@@ -230,6 +230,7 @@ function DataTab() {
             <Button variant="secondary" icon="download" onClick={() => void run(() => exportBackupFile(e), tr('Respaldo exportado'))}>{tr('Exportar respaldo (.monto)')}</Button>
             <Button variant="secondary" icon="upload" onClick={async () => { const f = await pickBackupFile(); if (f) tryRestore(f.data); }}>{tr('Importar respaldo')}</Button>
             <Button variant="secondary" icon="download" onClick={() => void run(() => exportJSON(e), tr('Datos exportados en JSON'))}>{tr('Exportar JSON')}</Button>
+            <Button icon="reports" onClick={() => { sessionStorage.setItem('monto:report-kind', 'all'); useApp.getState().go('reports'); }}>{tr('Exportar tablas (Excel, PDF, Notion)')}</Button>
           </div>
           <p className="text-[11.5px] text-muted mt-3">{tr('Si tienes contraseña, el respaldo .monto se exporta cifrado.')}</p>
         </Card>

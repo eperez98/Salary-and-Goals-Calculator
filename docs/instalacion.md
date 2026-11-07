@@ -2,7 +2,7 @@
 
 ## Usuarios (Windows 10/11)
 1. Descarga `Monto_x.y.z_x64.zip` desde [Releases](https://github.com/eperez98/monto/releases) y descomprímelo.
-2. (Opcional) Verifica la suma: `Get-FileHash .\Monto_0.5.3-beta.6_x64-setup.exe -Algorithm SHA256` y compárala con `SHA256SUMS.txt`.
+2. (Opcional) Verifica la suma: `Get-FileHash .\Monto_0.5.4-beta.7_x64-setup.exe -Algorithm SHA256` y compárala con `SHA256SUMS.txt`.
 3. Ejecuta el instalador y elige el idioma (español o inglés). Se instala para tu usuario (sin permisos de administrador) en `%LOCALAPPDATA%\Monto` y crea accesos directos en el menú Inicio y el escritorio.
 4. Si aparece **Windows SmartScreen** (el instalador aún no está firmado): *Más información → Ejecutar de todas formas*.
 
@@ -26,5 +26,5 @@ npm run tauri build    # genera src-tauri/target/release/bundle/nsis/*-setup.exe
 
 Prueba automática de instalación (PowerShell, Windows):
 ```powershell
-./scripts/windows-smoke-test.ps1 -Installer .\src-tauri\target\release\bundle\nsis\Monto_0.5.3-beta.6_x64-setup.exe
+./scripts/windows-smoke-test.ps1 -Installer .\src-tauri\target\release\bundle\nsis\Monto_0.5.4-beta.7_x64-setup.exe
 ```

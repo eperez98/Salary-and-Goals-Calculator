@@ -1,5 +1,5 @@
 // Prints release notes for a tag from CHANGELOG.md plus update instructions.
-// Usage: node scripts/release-notes.mjs v0.5.3-beta.6
+// Usage: node scripts/release-notes.mjs v0.5.4-beta.7
 import { readFileSync } from 'node:fs';
 const tag = process.argv[2] ?? '';
 const version = tag.replace(/^v/, '');

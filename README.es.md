@@ -6,7 +6,7 @@
 
 <br />
 
-[![Descargar para Windows](https://img.shields.io/badge/Descargar%20para%20Windows-0.5.3%20Beta%206-E8930F?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/eperez98/monto/releases)
+[![Descargar para Windows](https://img.shields.io/badge/Descargar%20para%20Windows-0.5.4%20Beta%207-E8930F?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/eperez98/monto/releases)
 
 [![CI](https://github.com/eperez98/monto/actions/workflows/ci.yml/badge.svg)](https://github.com/eperez98/monto/actions/workflows/ci.yml)
 ![Windows 10 | 11](https://img.shields.io/badge/Windows-10%20%7C%2011-14304D)
@@ -63,7 +63,7 @@ Base de datos SQLite 100 % local, cifrado **AES‑256** opcional, bloqueo autom�
 | <img src="assets/screenshots/es/transactions.png" alt="Movimientos" /><br /><sub><b>Movimientos</b> — búsqueda, filtros, comprobantes, importar y exportar CSV</sub> | <img src="assets/screenshots/es/accounts.png" alt="Cuentas" /><br /><sub><b>Cuentas y tarjetas</b> — saldos por moneda y uso de tarjetas</sub> |
 | <img src="assets/screenshots/es/budgets.png" alt="Presupuestos" /><br /><sub><b>Presupuestos</b> — límites mensuales con alertas al 70, 90 y 100 %</sub> | <img src="assets/screenshots/es/goals.png" alt="Objetivos" /><br /><sub><b>Objetivos de ahorro</b> — progreso, ritmo y aportaciones</sub> |
 | <img src="assets/screenshots/es/debts.png" alt="Préstamos y deudas" /><br /><sub><b>Préstamos y deudas</b> — cuotas, intereses y amortización</sub> | <img src="assets/screenshots/es/family.png" alt="Familia" /><br /><sub><b>Familia</b> — gastos compartidos, roles y permisos</sub> |
-| <img src="assets/screenshots/es/calendar.png" alt="Calendario" /><br /><sub><b>Calendario</b> — cobros, cuotas, servicios y recordatorios</sub> | <img src="assets/screenshots/es/reports.png" alt="Informes" /><br /><sub><b>Informes</b> — exportación a Excel, CSV y PDF</sub> |
+| <img src="assets/screenshots/es/calendar.png" alt="Calendario" /><br /><sub><b>Calendario</b> — cobros, cuotas, servicios y recordatorios</sub> | <img src="assets/screenshots/es/reports.png" alt="Informes" /><br /><sub><b>Informes</b> — tablas minimalistas para Excel, PDF y Notion</sub> |
 
 <details>
 <summary><b>🌙 Modo oscuro, configuración guiada y análisis</b></summary>
@@ -125,7 +125,8 @@ Base de datos SQLite 100 % local, cifrado **AES‑256** opcional, bloqueo autom�
 <details>
 <summary><b>Informes, análisis y privacidad</b></summary>
 
-- Ingresos, gastos, flujo de efectivo, ahorros, deudas, por categoría, evolución mensual y comparación anual. Exportación a **Excel**, **CSV** y **PDF**.
+- Ingresos, gastos, flujo de efectivo, ahorros, deudas, por categoría, evolución mensual y comparación anual.
+- **Exporta tablas ordenadas y minimalistas** a **Excel** (con orden y filtros), **PDF**, **Notion** (tablas Markdown) y CSV: un informe o *Todos los datos* de una vez.
 - Detección de duplicados, alertas de presupuesto, recordatorios de pagos, hábitos de consumo y proyecciones de ahorro, siempre marcadas como estimaciones.
 - Contraseña opcional con cifrado **AES‑256‑GCM**, bloqueo automático (`Ctrl + L`), PIN por integrante, registro de sesiones, copias automáticas y manuales, verificación de integridad.
 - **Actualizaciones:** al iniciar, Monto te avisa si hay una versión nueva y te pregunta si quieres descargarla. Nada se instala sin tu permiso; el instalador se verifica con SHA‑256 y antes se respaldan tus datos.
@@ -153,6 +154,7 @@ El zip incluye también `SHA256SUMS.txt` (para verificar el instalador) y `LEEME
 | Calidad | Vitest, E2E con Playwright, ESLint, GitHub Actions (compilación y prueba de instalación en Windows) |
 
 Más detalles en [docs/arquitectura.md](docs/arquitectura.md) y en las [decisiones de arquitectura](docs/decisiones/).
+
 
 ## Contribuir
 

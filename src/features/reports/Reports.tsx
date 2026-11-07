@@ -3,12 +3,14 @@ import { useApp } from '../../store/app';
 import { useCan, useEngine, useProfile, useScope, useQuery } from '../../hooks/useDb';
 import { useRange } from '../../hooks/useRange';
 import { expensesByCategory, monthlySeries, totals, balances } from '../../db/repo/analytics';
-import { listDebts, listGoals, DEBT_KIND_LABEL } from '../../db/repo/planning';
-import { listTransactions, listCategories, listAccounts, TX_TYPE_LABEL } from '../../db/repo/finance';
+import { listDebts, listGoals, listBudgets, listRecurring, listIncomeSources, incomeSummary, getExpensePlan, DEBT_KIND_LABEL, GOAL_KIND_LABEL } from '../../db/repo/planning';
+import { FREQUENCY_LABEL } from '../../domain/salary';
+import { RECUR_LABEL } from '../../domain/recurrence';
+import { listTransactions, listCategories, listAccounts, TX_TYPE_LABEL, ACCOUNT_TYPE_LABEL, PAYMENT_METHOD_LABEL } from '../../db/repo/finance';
 import { Button, Card, CardHeader, Money, PageHeader, Stat, EmptyState } from '../../components/ui';
 import { IncomeExpenseBars, NetArea, CategoryDonut } from '../../components/charts';
 import { Icon } from '../../icons';
-import { exportCSV, exportPDF, exportXLSX, type Report } from '../../services/export';
+import { exportCSV, exportNotion, exportPDF, exportXLSX, type Report } from '../../services/export';
 import { formatMoney, pct } from '../../lib/money';
 import { lastMonths, monthShort, formatMonth } from '../../lib/dates';
 import type { Engine } from '../../db/engine';
@@ -16,8 +18,9 @@ import type { ScopeFilter } from '../../db/types';
 import clsx from 'clsx';
 import { tr } from '../../lib/i18n';
 
-type Kind = 'income' | 'expense' | 'cashflow' | 'savings' | 'debts' | 'categories' | 'monthly' | 'annual';
+export type Kind = 'all' | 'income' | 'expense' | 'cashflow' | 'savings' | 'debts' | 'categories' | 'monthly' | 'annual';
 const KINDS: Array<{ k: Kind; label: string; icon: string }> = [
+  { k: 'all', label: tr('Todos los datos'), icon: 'database' },
   { k: 'income', label: tr('Ingresos'), icon: 'income' }, { k: 'expense', label: tr('Gastos'), icon: 'expense' }, { k: 'cashflow', label: tr('Flujo de efectivo'), icon: 'transfer' },
   { k: 'savings', label: tr('Ahorros'), icon: 'savings' }, { k: 'debts', label: tr('Deudas'), icon: 'loan' }, { k: 'categories', label: tr('Gastos por categoría'), icon: 'budget' },
   { k: 'monthly', label: tr('Evolución mensual'), icon: 'reports' }, { k: 'annual', label: tr('Comparación anual'), icon: 'calendar' },
@@ -34,6 +37,41 @@ function buildReport(e: Engine, kind: Kind, sf: ScopeFilter, range: { from: stri
     rows: listTransactions(e, { ...range, scope: sf, types: types as never, limit: 100000 }).map((x) => ({ date: x.date, description: x.description, category: cname(x.categoryId), account: accs.find((a) => a.id === x.accountId)?.name ?? '', currency: x.currency, amount: x.amount })),
   });
   switch (kind) {
+    case 'all': {
+      const ever = { from: '0000-01-01', to: '9999-12-31' };
+      const goals = listGoals(e, sf);
+      const debts = listDebts(e, sf);
+      const accounts = listAccounts(e, { includeArchived: true, ...(sf.scope === 'family' ? { sharedOnly: true } : { visibleTo: sf.memberId }) });
+      const txs = listTransactions(e, { ...ever, scope: sf, limit: 1000000 });
+      const plan = sf.scope === 'personal' ? getExpensePlan(e, sf.memberId) : [];
+      const inflow = (t: string) => t === 'income' || t === 'refund' || t === 'loan_disbursement';
+      return {
+        title: tr('Todos tus datos'), subtitle: sf.scope === 'family' ? tr('Hogar') : tr('Personal'),
+        summary: [
+          { label: tr('Movimientos'), value: String(txs.length) },
+          { label: tr('Cuentas'), value: String(accounts.length) },
+          { label: tr('Ahorrado en objetivos'), value: formatMoney(goals.reduce((a, g) => a + g.saved, 0), cur) },
+          { label: tr('Saldo pendiente'), value: formatMoney(debts.reduce((a, d) => a + (d.direction === 'owe' ? d.status.balance : 0), 0), cur) },
+        ],
+        tables: [
+          { name: tr('Movimientos'), columns: [{ key: 'date', label: tr('Fecha') }, { key: 'type', label: tr('Tipo') }, { key: 'description', label: tr('Descripción') }, { key: 'category', label: tr('Categoría') }, { key: 'account', label: tr('Cuenta') }, { key: 'method', label: tr('Método') }, { key: 'currency', label: tr('Moneda') }, { key: 'amount', label: tr('Importe'), money: true }],
+            rows: txs.map((x) => ({ date: x.date, type: TX_TYPE_LABEL[x.type], description: x.description, category: cname(x.categoryId), account: accs.find((a) => a.id === x.accountId)?.name ?? '', method: x.paymentMethod ? PAYMENT_METHOD_LABEL[x.paymentMethod] ?? '' : '', currency: x.currency, amount: inflow(x.type) ? x.amount : -x.amount })) },
+          { name: tr('Cuentas'), columns: [{ key: 'name', label: tr('Nombre') }, { key: 'type', label: tr('Tipo') }, { key: 'institution', label: tr('Institución') }, { key: 'currency', label: tr('Moneda') }, { key: 'balance', label: tr('Saldo actual'), money: true }, { key: 'limit', label: tr('Límite de crédito'), money: true }],
+            rows: accounts.map((a) => ({ name: a.archived ? `${a.name} (${tr('archivada')})` : a.name, type: ACCOUNT_TYPE_LABEL[a.type], institution: a.institution ?? '', currency: a.currency, balance: a.balance, limit: a.creditLimit })) },
+          { name: tr('Ingresos'), columns: [{ key: 'name', label: tr('Fuente') }, { key: 'freq', label: tr('Frecuencia') }, { key: 'currency', label: tr('Moneda') }, { key: 'monthly', label: tr('Mensual estimado'), money: true }, { key: 'year', label: tr('Recibido este año'), money: true }],
+            rows: listIncomeSources(e, sf.scope === 'personal' ? sf.memberId : undefined).map((s) => { const sm = incomeSummary(e, s); return { name: s.name, freq: FREQUENCY_LABEL[s.config.frequency], currency: s.currency, monthly: sm.estimate.monthlyNet, year: sm.receivedYear }; }) },
+          ...(plan.length ? [{ name: tr('Plan mensual'), columns: [{ key: 'name', label: tr('Gasto') }, { key: 'amount', label: tr('Importe'), money: true }], rows: plan.map((p) => ({ name: p.name, amount: p.amount })) }] : []),
+          { name: tr('Presupuestos'), columns: [{ key: 'name', label: tr('Categoría') }, { key: 'assigned', label: tr('Asignado'), money: true }, { key: 'used', label: tr('Utilizado'), money: true }, { key: 'available', label: tr('Disponible'), money: true }, { key: 'pct', label: '%', align: 'right' as const }],
+            rows: listBudgets(e, sf).map((b) => ({ name: b.categoryName, assigned: b.status.assigned, used: b.status.used, available: b.status.available, pct: b.status.pct.toFixed(0) })) },
+          { name: tr('Objetivos'), columns: [{ key: 'name', label: tr('Objetivo') }, { key: 'kind', label: tr('Tipo') }, { key: 'saved', label: tr('Ahorrado'), money: true }, { key: 'target', label: tr('Meta'), money: true }, { key: 'pct', label: '%', align: 'right' as const }, { key: 'date', label: tr('Fecha objetivo') }],
+            rows: goals.map((g) => ({ name: g.name, kind: GOAL_KIND_LABEL[g.kind], saved: g.saved, target: g.target, pct: pct(g.saved, g.target).toFixed(0), date: g.targetDate ?? '' })) },
+          { name: tr('Préstamos y deudas'), columns: [{ key: 'name', label: tr('Deuda') }, { key: 'kind', label: tr('Tipo') }, { key: 'principal', label: tr('Monto original'), money: true }, { key: 'rate', label: tr('Tasa %'), align: 'right' as const }, { key: 'paid', label: tr('Pagado'), money: true }, { key: 'balance', label: tr('Saldo pendiente'), money: true }],
+            rows: debts.map((d) => ({ name: d.name, kind: DEBT_KIND_LABEL[d.kind], principal: d.principal, rate: d.annualRate, paid: d.status.paidTotal, balance: d.status.balance })) },
+          { name: tr('Pagos recurrentes'), columns: [{ key: 'description', label: tr('Descripción') }, { key: 'freq', label: tr('Frecuencia') }, { key: 'start', label: tr('Primera fecha') }, { key: 'auto', label: tr('Automático') }, { key: 'amount', label: tr('Importe'), money: true }],
+            rows: listRecurring(e, sf).map((x) => ({ description: x.description, freq: RECUR_LABEL[x.frequency], start: x.startDate, auto: x.autoPost ? tr('Sí') : tr('No'), amount: x.kind === 'expense' ? -x.amount : x.amount })) },
+        ],
+      };
+    }
     case 'income': return { ...base, title: tr('Informe de ingresos'), tables: [{ name: tr('Por categoría'), columns: [{ key: 'name', label: tr('Categoría') }, { key: 'amount', label: tr('Total'), money: true }, { key: 'pct', label: '%' }], rows: expensesByCategory(e, range, sf, 'income').map((c) => ({ name: c.name, amount: c.amount, pct: pct(c.amount, t.income).toFixed(1) })) }, txTable(['income'], tr('Detalle de ingresos'))] };
     case 'expense': return { ...base, title: tr('Informe de gastos'), tables: [txTable(['expense', 'loan_payment', 'refund'], tr('Detalle de gastos'))] };
     case 'categories': return { ...base, title: tr('Gastos por categoría'), tables: [{ name: tr('Categorías'), columns: [{ key: 'name', label: tr('Categoría') }, { key: 'amount', label: tr('Total'), money: true }, { key: 'pct', label: tr('% del gasto') }], rows: expensesByCategory(e, range, sf).map((c) => ({ name: c.name, amount: c.amount, pct: pct(c.amount, t.expense).toFixed(1) })) }] };
@@ -74,7 +112,8 @@ export default function Reports() {
   const { range, label } = useRange();
   const canExport = useCan('report.export');
   const toast = useApp((s) => s.toast);
-  const [kind, setKind] = useState<Kind>('expense');
+  // Settings → Data can open this page straight on "All data".
+  const [kind, setKind] = useState<Kind>(() => { const k = sessionStorage.getItem('monto:report-kind') as Kind | null; sessionStorage.removeItem('monto:report-kind'); return k ?? 'expense'; });
   const [busy, setBusy] = useState<string | null>(null);
   const cur = profile.primaryCurrency;
   const rev = useApp((s) => s.revision);
@@ -84,11 +123,11 @@ export default function Reports() {
   const annual = useQuery((en) => { const y = new Date().getFullYear(); const c = monthlySeries(en, 12, sf, `${y}-12-15`); const p = monthlySeries(en, 12, sf, `${y - 1}-12-15`); return c.map((m, i) => ({ ...m, label: monthShort(i), income: p[i].expense, expense: m.expense })); }, [sf]);
   void lastMonths;
 
-  const run = async (fmt: 'csv' | 'xlsx' | 'pdf') => {
+  const run = async (fmt: 'csv' | 'xlsx' | 'pdf' | 'md') => {
     setBusy(fmt);
     try {
       const slug = KINDS.find((k) => k.k === kind)!.label.toLowerCase().replace(/\s+/g, '-');
-      const p = fmt === 'csv' ? await exportCSV(report, slug) : fmt === 'xlsx' ? await exportXLSX(report, slug) : await exportPDF(report, slug);
+      const p = fmt === 'csv' ? await exportCSV(report, slug) : fmt === 'xlsx' ? await exportXLSX(report, slug) : fmt === 'md' ? await exportNotion(report, slug) : await exportPDF(report, slug);
       if (p) toast({ kind: 'success', title: tr('Informe exportado'), body: p });
     } catch (err) { toast({ kind: 'error', title: tr('No se pudo exportar'), body: (err as Error).message }); }
     setBusy(null);
@@ -97,9 +136,10 @@ export default function Reports() {
   const main = report.tables[0];
   return (
     <div>
-      <PageHeader title={tr('Informes')} subtitle={`${label}${sf.scope === 'family' ? ' · Hogar' : ''}`} actions={canExport && <>
+      <PageHeader title={tr('Informes')} subtitle={`${label}${sf.scope === 'family' ? ` · ${tr('Hogar')}` : ''}`} actions={canExport && <>
         <Button variant="secondary" icon="download" loading={busy === 'csv'} onClick={() => run('csv')}>{tr('CSV')}</Button>
         <Button variant="secondary" icon="download" loading={busy === 'xlsx'} onClick={() => run('xlsx')}>{tr('Excel')}</Button>
+        <Button variant="secondary" icon="download" loading={busy === 'md'} onClick={() => run('md')}>{tr('Notion')}</Button>
         <Button icon="download" loading={busy === 'pdf'} onClick={() => run('pdf')}>{tr('PDF')}</Button>
       </>} />
       <div className="flex flex-wrap gap-2 mb-5">
@@ -118,7 +158,7 @@ export default function Reports() {
       </div>
       {report.tables.map((tb) => (
         <Card key={tb.name} hover={false} className="mb-5">
-          <CardHeader title={tb.name} subtitle={`${tb.rows.length} filas`} />
+          <CardHeader title={tb.name} subtitle={tr('{n} filas', { n: tb.rows.length })} />
           <div className="p-3 max-h-[420px] overflow-auto">
             <table className="w-full text-[12.5px] num">
               <thead className="sticky top-0 bg-surface text-muted"><tr>{tb.columns.map((c) => <th key={c.key} className={clsx('py-2 px-2 font-medium', c.money ? 'text-right' : 'text-left')}>{c.label}</th>)}</tr></thead>

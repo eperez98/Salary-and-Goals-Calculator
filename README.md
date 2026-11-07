@@ -6,7 +6,7 @@
 
 <br />
 
-[![Download for Windows](https://img.shields.io/badge/Download%20for%20Windows-0.5.3%20Beta%206-E8930F?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/eperez98/monto/releases)
+[![Download for Windows](https://img.shields.io/badge/Download%20for%20Windows-0.5.4%20Beta%207-E8930F?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/eperez98/monto/releases)
 
 [![CI](https://github.com/eperez98/monto/actions/workflows/ci.yml/badge.svg)](https://github.com/eperez98/monto/actions/workflows/ci.yml)
 ![Windows 10 | 11](https://img.shields.io/badge/Windows-10%20%7C%2011-14304D)
@@ -63,7 +63,7 @@ Individual, couple or family profiles with roles, shared expenses, who‑owes‑
 | <img src="assets/screenshots/en/transactions.png" alt="Transactions" /><br /><sub><b>Transactions</b> — search, filters, receipts, CSV import/export</sub> | <img src="assets/screenshots/en/accounts.png" alt="Accounts" /><br /><sub><b>Accounts & cards</b> — balances by currency and card usage</sub> |
 | <img src="assets/screenshots/en/budgets.png" alt="Budgets" /><br /><sub><b>Budgets</b> — monthly limits with 70 / 90 / 100 % alerts</sub> | <img src="assets/screenshots/en/goals.png" alt="Goals" /><br /><sub><b>Savings goals</b> — progress, pace and contributions</sub> |
 | <img src="assets/screenshots/en/debts.png" alt="Loans and debts" /><br /><sub><b>Loans & debts</b> — installments, interest and amortization</sub> | <img src="assets/screenshots/en/family.png" alt="Family" /><br /><sub><b>Family</b> — shared expenses, roles and permissions</sub> |
-| <img src="assets/screenshots/en/calendar.png" alt="Calendar" /><br /><sub><b>Calendar</b> — paydays, installments, bills and reminders</sub> | <img src="assets/screenshots/en/reports.png" alt="Reports" /><br /><sub><b>Reports</b> — export to Excel, CSV and PDF</sub> |
+| <img src="assets/screenshots/en/calendar.png" alt="Calendar" /><br /><sub><b>Calendar</b> — paydays, installments, bills and reminders</sub> | <img src="assets/screenshots/en/reports.png" alt="Reports" /><br /><sub><b>Reports</b> — minimal tables for Excel, PDF and Notion</sub> |
 
 <details>
 <summary><b>🌙 Dark mode, guided setup and insights</b></summary>
@@ -125,7 +125,8 @@ Individual, couple or family profiles with roles, shared expenses, who‑owes‑
 <details>
 <summary><b>Reports, insights and privacy</b></summary>
 
-- Income, expenses, cash flow, savings, debts, by category, monthly trend and year‑over‑year. Export to **Excel**, **CSV** and **PDF**.
+- Income, expenses, cash flow, savings, debts, by category, monthly trend and year‑over‑year.
+- **Export clean, minimal tables** to **Excel** (sortable, filterable), **PDF**, **Notion** (Markdown tables) and CSV — one report or *All data* at once.
 - Duplicate detection, budget alerts, payment reminders, spending habits and savings projections — always labeled as estimates.
 - Optional password with **AES‑256‑GCM** encryption, auto‑lock (`Ctrl + L`), per‑member PIN, session log, daily and manual backups, integrity check.
 - **Updates:** at startup Monto tells you when a new version is out and asks whether to download it. Nothing installs without your OK; the installer is verified with SHA‑256 and your data is backed up first.
@@ -153,6 +154,7 @@ The zip also includes `SHA256SUMS.txt` (to verify the installer) and `LEEME.txt`
 | Quality | Vitest, Playwright E2E, ESLint, GitHub Actions (build + install test on Windows) |
 
 More in [docs/arquitectura.md](docs/arquitectura.md) and the [architecture decisions](docs/decisiones/).
+
 
 ## Contributing
 

@@ -179,6 +179,13 @@ try {
   const pdfPath = await pdf.path();
   const { readFileSync } = await import('node:fs');
   assert(readFileSync(pdfPath).subarray(0, 4).toString() === '%PDF', 'PDF válido');
+  await click('Todos los datos', { exact: true });
+  await page.waitForTimeout(800);
+  const [md] = await Promise.all([page.waitForEvent('download'), click('Notion', { exact: true })]);
+  const mdText = readFileSync(await md.path(), 'utf8');
+  assert(md.suggestedFilename().endsWith('.md') && mdText.startsWith('# Todos tus datos') && mdText.includes('| Fecha | Tipo | Descripción'), 'exportación a Notion con tablas Markdown');
+  const [all] = await Promise.all([page.waitForEvent('download'), click('Excel', { exact: true })]);
+  assert(all.suggestedFilename().endsWith('.xlsx'), 'exportación de todos los datos a Excel');
 
   step('Backup + integrity');
   await page.getByRole('button', { name: 'Configuración' }).click();
@@ -191,8 +198,8 @@ try {
 
   step('Updates tab');
   await click('Actualizaciones', { exact: true });
-  await page.getByText('Monto 0.5.3 Beta 6').waitFor();
-  assert(true, 'versión 0.5.3 Beta 6 visible en Actualizaciones');
+  await page.getByText('Monto 0.5.4 Beta 7').waitFor();
+  assert(true, 'versión 0.5.4 Beta 7 visible en Actualizaciones');
   await page.waitForTimeout(900);
   await shot('19-updates');
 
