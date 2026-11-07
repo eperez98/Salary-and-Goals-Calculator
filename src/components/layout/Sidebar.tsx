@@ -16,6 +16,7 @@ const NAV: Array<{ key: RouteKey; label: string; icon: string; family?: boolean 
   { key: 'transactions', label: tr('Movimientos'), icon: 'transactions' },
   { key: 'accounts', label: tr('Cuentas y tarjetas'), icon: 'bank' },
   { key: 'income', label: tr('Ingresos y salario'), icon: 'salary' },
+  { key: 'plan', label: tr('Plan mensual'), icon: 'savings' },
   { key: 'budgets', label: tr('Presupuestos'), icon: 'budget' },
   { key: 'goals', label: tr('Objetivos'), icon: 'goal' },
   { key: 'debts', label: tr('Préstamos y deudas'), icon: 'loan' },

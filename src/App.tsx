@@ -27,6 +27,7 @@ const Dashboard = lazy(() => import('./features/dashboard/Dashboard'));
 const Transactions = lazy(() => import('./features/transactions/Transactions'));
 const Accounts = lazy(() => import('./features/accounts/Accounts'));
 const Income = lazy(() => import('./features/income/Income'));
+const Plan = lazy(() => import('./features/plan/Plan'));
 const Budgets = lazy(() => import('./features/budgets/Budgets'));
 const Goals = lazy(() => import('./features/goals/Goals'));
 const Debts = lazy(() => import('./features/debts/Debts'));
@@ -36,7 +37,7 @@ const Reports = lazy(() => import('./features/reports/Reports'));
 const Insights = lazy(() => import('./features/insights/Insights'));
 const Settings = lazy(() => import('./features/settings/Settings'));
 
-const PAGES: Record<RouteKey, React.ComponentType> = { dashboard: Dashboard, transactions: Transactions, accounts: Accounts, income: Income, budgets: Budgets, goals: Goals, debts: Debts, family: Family, calendar: Calendar, reports: Reports, insights: Insights, settings: Settings };
+const PAGES: Record<RouteKey, React.ComponentType> = { dashboard: Dashboard, transactions: Transactions, accounts: Accounts, income: Income, plan: Plan, budgets: Budgets, goals: Goals, debts: Debts, family: Family, calendar: Calendar, reports: Reports, insights: Insights, settings: Settings };
 
 function PageSkeleton() {
   return (

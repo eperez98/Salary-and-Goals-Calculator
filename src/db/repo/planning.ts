@@ -2,7 +2,8 @@ import { z } from 'zod';
 import { Engine, nowISO, uid } from '../engine';
 import { camel } from '../map';
 import { assertCan } from '../../domain/permissions';
-import { categoryIdByName, log } from './core';
+import { categoryIdByName, getSetting, log, setSetting } from './core';
+import type { PlanItem } from '../../domain/plan';
 import { createTransaction } from './finance';
 import { estimateIncome, nextPayment, payOccurrences, type IncomeConfig, type PayOccurrence } from '../../domain/salary';
 import { applyPayments, type DebtStatus } from '../../domain/amortization';
@@ -383,3 +384,21 @@ export function familyBalances(e: Engine) {
 }
 
 export type { Scope };
+
+// ---------------------------------------------------------------- monthly expense plan
+const planItemsSchema = z.array(z.object({ name: z.string().trim().min(1, tr('Escribe un nombre')).max(60), amount: z.number().int().min(0, tr('Importe no válido')).max(100_000_000_00) })).max(100);
+
+/** Each member's own plan, stored in settings (no migration needed). */
+export function getExpensePlan(e: Engine, memberId: string): PlanItem[] {
+  return getSetting<{ items: PlanItem[] }>(e, `expensePlan:${memberId}`, { items: [] }).items;
+}
+
+export function saveExpensePlan(e: Engine, actor: Actor, items: PlanItem[]) {
+  assertCan(actor.role, 'income.manage');
+  setSetting(e, `expensePlan:${actor.id}`, { items: planItemsSchema.parse(items.filter((i) => i.amount > 0)) });
+}
+
+/** Net monthly income the member expects from their income sources. */
+export function memberMonthlyIncome(e: Engine, memberId: string): number {
+  return listIncomeSources(e, memberId).reduce((a, s) => a + incomeSummary(e, s).estimate.monthlyNet, 0);
+}

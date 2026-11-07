@@ -7,7 +7,7 @@
 *Ingresos, salarios quincenales, gastos, cuentas, presupuestos, ahorros y deudas bajo control desde un único lugar. Sin nube: tus datos se quedan en tu equipo.*
 
 [![CI](https://github.com/eperez98/monto/actions/workflows/ci.yml/badge.svg)](https://github.com/eperez98/monto/actions/workflows/ci.yml)
-![Versión](https://img.shields.io/badge/versi%C3%B3n-0.4.8%20Beta%203-E8930F)
+![Versión](https://img.shields.io/badge/versi%C3%B3n-0.5.2%20Beta%205-E8930F)
 ![Windows 11](https://img.shields.io/badge/Windows-10%20%7C%2011-12291F)
 ![Licencia MIT](https://img.shields.io/badge/licencia-MIT-1F4B39)
 ![Offline](https://img.shields.io/badge/funciona-sin%20conexi%C3%B3n-1F4B39)
@@ -53,6 +53,7 @@
 - Categorías y **subcategorías** personalizables.
 
 **Planificación**
+- **Plan mensual**: Monto te pregunta tus gastos del mes uno por uno, los resta de tu ingreso neto y te dice cuánto te queda, si puedes ahorrar y cuánto. Disponible para cada integrante en todos los modos.
 - **Presupuestos** mensuales por categoría con alertas al 70 %, 90 % y 100 %.
 - **Objetivos** de ahorro (emergencia, vehículo, vivienda, vacaciones, educación…) con anillo de progreso animado y celebración al completarlos.
 - **Préstamos y deudas** (personales, hipotecas, auto, tarjetas, deudas entre personas) con cuota, intereses, saldo pendiente y tabla de **amortización**.
@@ -92,7 +93,7 @@
 | ![Presupuestos](assets/screenshots/10-budgets.png) Presupuestos con alertas | ![Objetivos](assets/screenshots/11-goals.png) Objetivos de ahorro |
 | ![Familia](assets/screenshots/13-family.png) Finanzas familiares | ![Informes](assets/screenshots/15-reports.png) Informes exportables |
 | ![Calendario](assets/screenshots/14-calendar.png) Calendario financiero | ![Modo oscuro](assets/screenshots/17-dashboard-dark.png) Modo oscuro |
-| ![English](assets/screenshots/20-dashboard-en.png) Interfaz en inglés | ![Actualizaciones](assets/screenshots/19-updates.png) Actualizaciones integradas |
+| ![Plan mensual](assets/screenshots/03c-plan.png) Plan mensual: gastos uno por uno y ahorro posible | ![English](assets/screenshots/20-dashboard-en.png) Interfaz en inglés |
 
 ## Descargar
 
@@ -162,7 +163,7 @@ El instalador de Windows debe generarse en Windows. El flujo [`CI`](.github/work
 
 ## Guía de uso
 
-1. **Primer inicio:** el asistente pregunta tu nombre, si usarás Monto de forma individual, en pareja o en familia, la moneda principal, cómo cobras (con cálculo en vivo del ingreso mensual y anual), tu cuenta principal y si quieres una contraseña.
+1. **Primer inicio:** el asistente pregunta tu nombre, si usarás Monto de forma individual, en pareja o en familia, la moneda principal, cómo cobras (el salario neto, con cálculo en vivo del ingreso mensual y anual), tus gastos del mes uno por uno, tu cuenta principal y si quieres una contraseña.
 2. **Registra movimientos** con el botón *Movimiento* o `Ctrl + N`.
 3. **Confirma tus cobros** en *Ingresos y salario* cuando el dinero llegue a tu cuenta.
 4. **Planifica** con presupuestos, objetivos y pagos recurrentes en el calendario.
@@ -174,7 +175,7 @@ Manual completo: [docs/manual-de-usuario.md](docs/manual-de-usuario.md).
 ## Pruebas
 
 ```bash
-npm test                         # 50 pruebas: cálculos, SQLite real, cifrado, permisos, persistencia, traducciones
+npm test                         # 53 pruebas: cálculos, SQLite real, cifrado, permisos, persistencia, traducciones, plan mensual
 npm run i18n:check               # lista los textos sin traducción al inglés
 npm run dev & npm run e2e        # recorrido E2E en Chromium (onboarding, CRUD, exportación, persistencia, permisos)
 node scripts/e2e.mjs --shots     # además regenera las capturas de assets/screenshots

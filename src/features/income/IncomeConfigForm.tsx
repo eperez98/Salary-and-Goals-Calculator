@@ -49,7 +49,8 @@ export function draftToConfig(d: IncomeDraft): IncomeConfig {
 
 const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
-export function IncomeConfigForm({ draft, set, currency, compact = false }: { draft: IncomeDraft; set: (p: Partial<IncomeDraft>) => void; currency: Currency; compact?: boolean }) {
+/** `net`: amounts are entered after deductions (take-home pay), so deduction options are hidden. */
+export function IncomeConfigForm({ draft, set, currency, compact = false, net = false }: { draft: IncomeDraft; set: (p: Partial<IncomeDraft>) => void; currency: Currency; compact?: boolean; net?: boolean }) {
   const cfg = useMemo(() => draftToConfig(draft), [draft]);
   const est = useMemo(() => estimateIncome(cfg), [cfg]);
   const f = draft.frequency;
@@ -68,13 +69,13 @@ export function IncomeConfigForm({ draft, set, currency, compact = false }: { dr
             <>
               <Toggle checked={draft.sameAmount} onChange={(v) => set({ sameAmount: v })} label={tr('Ambas quincenas tienen el mismo importe')} description={tr('Desactívalo si tu primera y segunda quincena son distintas.')} />
               <div className="grid grid-cols-2 gap-3">
-                <Field label={draft.sameAmount ? tr('Salario por quincena (bruto)') : tr('Primera quincena (bruto)')}><MoneyInput currency={currency} value={draft.amount1} onChange={(v) => set({ amount1: v })} aria-label={tr('Primera quincena')} /></Field>
-                {!draft.sameAmount && <Field label={tr('Segunda quincena (bruto)')}><MoneyInput currency={currency} value={draft.amount2} onChange={(v) => set({ amount2: v })} aria-label={tr('Segunda quincena')} /></Field>}
+                <Field label={net ? (draft.sameAmount ? tr('Salario por quincena (neto, lo que recibes)') : tr('Primera quincena (neto)')) : draft.sameAmount ? tr('Salario por quincena (bruto)') : tr('Primera quincena (bruto)')}><MoneyInput currency={currency} value={draft.amount1} onChange={(v) => set({ amount1: v })} aria-label={tr('Primera quincena')} /></Field>
+                {!draft.sameAmount && <Field label={net ? tr('Segunda quincena (neto)') : tr('Segunda quincena (bruto)')}><MoneyInput currency={currency} value={draft.amount2} onChange={(v) => set({ amount2: v })} aria-label={tr('Segunda quincena')} /></Field>}
               </div>
             </>
           )}
           {(f === 'weekly' || f === 'biweekly' || f === 'monthly') && (
-            <Field label={f === 'monthly' ? tr('Salario mensual (bruto)') : f === 'weekly' ? tr('Pago semanal (bruto)') : tr('Pago cada 2 semanas (bruto)')}><MoneyInput currency={currency} value={draft.amount1} onChange={(v) => set({ amount1: v })} aria-label={tr('Importe')} /></Field>
+            <Field label={net ? (f === 'monthly' ? tr('Salario mensual (neto, lo que recibes)') : f === 'weekly' ? tr('Pago semanal (neto)') : tr('Pago cada 2 semanas (neto)')) : f === 'monthly' ? tr('Salario mensual (bruto)') : f === 'weekly' ? tr('Pago semanal (bruto)') : tr('Pago cada 2 semanas (bruto)')}><MoneyInput currency={currency} value={draft.amount1} onChange={(v) => set({ amount1: v })} aria-label={tr('Importe')} /></Field>
           )}
           {f === 'hourly' && (
             <div className="grid grid-cols-3 gap-3">
@@ -101,12 +102,12 @@ export function IncomeConfigForm({ draft, set, currency, compact = false }: { dr
           {f !== 'variable' && f !== 'other' && (
             <div className="rounded-[18px] border border-line bg-surface-2 p-4 space-y-3.5">
               {sched !== 'weekly' && sched !== 'biweekly' && <Toggle checked={draft.adjustBusinessDay} onChange={(v) => set({ adjustBusinessDay: v })} label={tr('Pago adelantado en fines de semana')} description={tr('Si el día de pago cae sábado o domingo, se espera el viernes anterior.')} />}
-              <Toggle checked={draft.panamaDeductions} onChange={(v) => set({ panamaDeductions: v })} label={tr('Aplicar descuentos de ley (Panamá)')} description={tr('CSS 9.75 % y Seguro Educativo 1.25 % sobre el salario bruto.')} />
+              {!net && <Toggle checked={draft.panamaDeductions} onChange={(v) => set({ panamaDeductions: v })} label={tr('Aplicar descuentos de ley (Panamá)')} description={tr('CSS 9.75 % y Seguro Educativo 1.25 % sobre el salario bruto.')} />}
               <Toggle checked={draft.includeDecimo} onChange={(v) => set({ includeDecimo: v })} label={tr('Incluir décimo tercer mes')} description={tr('Estimado en tres partidas: 15 de abril, 15 de agosto y 15 de diciembre.')} />
-              <div className="grid grid-cols-[1fr_160px] gap-3">
+              {!net && <div className="grid grid-cols-[1fr_160px] gap-3">
                 <Field label={tr('Otro descuento por pago (opcional)')}><Input placeholder={tr('Ej. Préstamo de cooperativa')} value={draft.extraDeductionName} onChange={(e) => set({ extraDeductionName: e.target.value })} /></Field>
                 <Field label={tr('Importe')}><MoneyInput currency={currency} value={draft.extraDeduction} onChange={(v) => set({ extraDeduction: v })} aria-label={tr('Importe del descuento')} /></Field>
-              </div>
+              </div>}
             </div>
           )}
         </motion.div>
@@ -129,7 +130,7 @@ export function IncomeConfigForm({ draft, set, currency, compact = false }: { dr
           <div><p className="text-[11px] text-white/55">{tr('Pagos al año')}</p><p className="text-[18px] font-semibold num">{est.paymentsPerYear}</p></div>
         </div>
         <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-white/10">
-          <div><p className="text-[11px] text-white/55">{tr('Ingreso mensual bruto')}</p><Money animated cents={est.monthlyGross} currency={currency} className="text-[15px] font-semibold" /></div>
+          {net ? <div /> : <div><p className="text-[11px] text-white/55">{tr('Ingreso mensual bruto')}</p><Money animated cents={est.monthlyGross} currency={currency} className="text-[15px] font-semibold" /></div>}
           <div><p className="text-[11px] text-white/55">{tr('Ingreso mensual neto')}</p><Money animated cents={est.monthlyNet} currency={currency} className="text-[22px] font-semibold text-[#5BE0A8]" /></div>
           <div><p className="text-[11px] text-white/55">{tr('Ingreso anual')}{' '}{est.decimoGross ? tr('(con décimo)') : ''}</p><Money animated cents={est.annualGross} currency={currency} className="text-[15px] font-semibold" /></div>
         </div>

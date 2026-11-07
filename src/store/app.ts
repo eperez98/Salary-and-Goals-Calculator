@@ -3,7 +3,7 @@ import type { Engine } from '../db/engine';
 import type { Actor, Scope, Transaction, TxType } from '../db/types';
 import type { PeriodKind, Range } from '../lib/dates';
 
-export type RouteKey = 'dashboard' | 'transactions' | 'accounts' | 'income' | 'budgets' | 'goals' | 'debts' | 'family' | 'calendar' | 'reports' | 'insights' | 'settings';
+export type RouteKey = 'dashboard' | 'transactions' | 'accounts' | 'income' | 'plan' | 'budgets' | 'goals' | 'debts' | 'family' | 'calendar' | 'reports' | 'insights' | 'settings';
 export type Phase = 'splash' | 'locked' | 'onboarding' | 'pickMember' | 'app' | 'error';
 
 export interface Toast { id: number; kind: 'success' | 'error' | 'info' | 'celebrate'; title: string; body?: string; action?: { label: string; onClick: () => void } }

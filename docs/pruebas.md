@@ -6,7 +6,7 @@ Fecha: 2026-11-06. Cada punto indica **cómo** se verificó. Lo que no se pudo v
 
 | Conjunto | Comando | Resultado |
 |---|---|---|
-| Unitarias + integración con SQLite real y cobertura de traducciones (50 pruebas) | `npm test` | ✅ |
+| Unitarias + integración con SQLite real y cobertura de traducciones (53 pruebas) | `npm test` | ✅ |
 | Validación de TypeScript (modo estricto) | `npm run typecheck` | ✅ |
 | Lint (ESLint + typescript-eslint + react-hooks) | `npm run lint` | ✅ |
 | Build de producción | `npm run build` | ✅ |

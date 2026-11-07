@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import confetti from 'canvas-confetti';
 import { Button, ChoiceCard, Segmented, Field, Input, MoneyInput, Select, Toggle, useMotionOK, ease } from '../../components/ui';
@@ -6,7 +6,10 @@ import { LogoMark } from '../../brand/Logo';
 import { Icon } from '../../icons';
 import { IncomeConfigForm, emptyDraft, draftToConfig, type IncomeDraft } from '../income/IncomeConfigForm';
 import { incomeConfigSchema } from '../../db/repo/planning';
-import { createIncomeSource } from '../../db/repo/planning';
+import { createIncomeSource, saveExpensePlan } from '../../db/repo/planning';
+import { ExpensePlanner } from '../plan/ExpensePlanner';
+import { estimateIncome } from '../../domain/salary';
+import type { PlanItem } from '../../domain/plan';
 import { createAccount } from '../../db/repo/finance';
 import { createMember, seedCategories, setPrefs, setProfile } from '../../db/repo/core';
 import { parseMoney, type Currency } from '../../lib/money';
@@ -17,7 +20,7 @@ import { errorMessage } from '../../hooks/useDb';
 import { lang, setLang, tr } from '../../lib/i18n';
 
 const BANKS = ['Banco General', 'Banistmo', 'BAC Credomatic', 'Banco Nacional de Panamá', 'Caja de Ahorros', 'Global Bank', 'Multibank', 'Banesco', 'St. Georges Bank', 'Credicorp Bank', tr('Otro')];
-const STEPS = [tr('Bienvenida'), tr('Perfil'), tr('Moneda'), tr('Ingresos'), tr('Cuenta'), tr('Seguridad'), tr('Listo')];
+const STEPS = [tr('Bienvenida'), tr('Perfil'), tr('Moneda'), tr('Ingresos'), tr('Gastos'), tr('Cuenta'), tr('Seguridad'), tr('Listo')];
 
 export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner: Member) => void }) {
   const ok = useMotionOK();
@@ -31,6 +34,8 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
   const [skipIncome, setSkipIncome] = useState(false);
   const [income, setIncome] = useState<IncomeDraft>(() => emptyDraft(today()));
   const [employer, setEmployer] = useState('');
+  const [plan, setPlan] = useState<PlanItem[]>([]);
+  const monthlyNet = useMemo(() => (skipIncome ? 0 : estimateIncome(draftToConfig(income)).monthlyNet), [skipIncome, income]);
   const [accName, setAccName] = useState('Banco General');
   const [accType, setAccType] = useState<AccountType>('savings');
   const [accBalance, setAccBalance] = useState('');
@@ -49,8 +54,8 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
       const r = incomeConfigSchema.safeParse(draftToConfig(income));
       if (!r.success) return r.error.issues[0].message;
     }
-    if (step === 4 && Number.isNaN(parseMoney(accBalance || '0'))) return tr('El saldo inicial no es válido.');
-    if (step === 5 && usePw) {
+    if (step === 5 && Number.isNaN(parseMoney(accBalance || '0'))) return tr('El saldo inicial no es válido.');
+    if (step === 6 && usePw) {
       if (pw.length < 8) return tr('La contraseña debe tener al menos 8 caracteres.');
       if (pw !== pw2) return tr('Las contraseñas no coinciden.');
     }
@@ -67,6 +72,7 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
         const actor = { id: owner.id, role: owner.role };
         if (mode !== 'individual') others.filter((o) => o.trim()).forEach((o) => createMember(engine, null, { name: o.trim(), role: 'adult' }));
         const acc = createAccount(engine, actor, { name: accName.trim() || tr('Cuenta principal'), type: accType, currency, initialBalance: parseMoney(accBalance || '0'), institution: BANKS.includes(accName) ? accName : null, ownerMemberId: mode === 'individual' ? null : owner.id });
+        if (plan.length) saveExpensePlan(engine, actor, plan);
         if (!skipIncome) createIncomeSource(engine, actor, { name: employer.trim() || tr('Salario'), config: draftToConfig(income), currency, accountId: acc.id, startDate: today() });
         setPrefs(engine, { theme: 'system', reducedMotion: 'system', autoLockMinutes: usePw ? 5 : 0, showBothCurrencies: true });
         setProfile(engine, { name: name.trim(), mode, primaryCurrency: currency, onboarded: true, householdName: household.trim() || undefined });
@@ -161,17 +167,24 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
               {step === 3 && (
                 <div>
                   <h2 className="text-[30px] font-semibold tracking-[-0.04em]">{tr('¿Cómo recibes tus ingresos?')}</h2>
-                  <p className="serif text-[18px] text-ink-2 mb-6">{tr('Monto calculará tu ingreso mensual y anual estimado.')}</p>
+                  <p className="serif text-[18px] text-ink-2 mb-6">{tr('Escribe lo que recibes, ya con los descuentos aplicados.')}</p>
                   <Toggle checked={skipIncome} onChange={setSkipIncome} label={tr('Configurar más tarde')} description={tr('Puedes añadir tus fuentes de ingreso desde el módulo Ingresos.')} />
                   {!skipIncome && (
                     <div className="mt-6 space-y-4">
                       <Field label={tr('Empresa o fuente de ingreso')}><Input value={employer} onChange={(e) => setEmployer(e.target.value)} placeholder={tr('Ej. Empresa Ejemplo, S.A.')} /></Field>
-                      <IncomeConfigForm draft={income} set={(p) => setIncome({ ...income, ...p })} currency={currency} />
+                      <IncomeConfigForm net draft={income} set={(p) => setIncome({ ...income, ...p })} currency={currency} />
                     </div>
                   )}
                 </div>
               )}
               {step === 4 && (
+                <div>
+                  <h2 className="text-[30px] font-semibold tracking-[-0.04em]">{tr('Tus gastos del mes')}</h2>
+                  <p className="serif text-[18px] text-ink-2 mb-6">{tr('Te preguntaremos uno por uno y veremos cuánto te queda para ahorrar.')}</p>
+                  <ExpensePlanner income={monthlyNet} currency={currency} initial={plan} onChange={setPlan} />
+                </div>
+              )}
+              {step === 5 && (
                 <div>
                   <h2 className="text-[30px] font-semibold tracking-[-0.04em]">{tr('Tu cuenta principal')}</h2>
                   <p className="serif text-[18px] text-ink-2">{tr('Donde recibes tu salario. Podrás añadir más cuentas y tarjetas.')}</p>
@@ -183,7 +196,7 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
                   </div>
                 </div>
               )}
-              {step === 5 && (
+              {step === 6 && (
                 <div>
                   <h2 className="text-[30px] font-semibold tracking-[-0.04em]">{tr('Protege tu información')}</h2>
                   <p className="serif text-[18px] text-ink-2">{tr('Opcional: cifra la base de datos con una contraseña.')}</p>
@@ -199,7 +212,7 @@ export function Onboarding({ engine, onDone }: { engine: Engine; onDone: (owner:
                   </div>
                 </div>
               )}
-              {step === 6 && (
+              {step === 7 && (
                 <div className="pt-10 text-center">
                   <motion.div initial={ok ? { scale: 0 } : false} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 15 }} className="mx-auto grid place-items-center size-20 rounded-full bg-emerald text-white"><Icon name="check" size={38} strokeWidth={2.4} /></motion.div>
                   <h2 className="text-[34px] font-semibold tracking-[-0.04em] mt-6">{tr('¡Todo listo,')}{' '}{name.split(' ')[0]}!</h2>

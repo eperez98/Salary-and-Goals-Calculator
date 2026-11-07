@@ -41,11 +41,25 @@ try {
   await page.getByPlaceholder('Ej. Empresa Ejemplo, S.A.').fill('Empresa Ejemplo, S.A.');
   await page.getByRole('textbox', { name: 'Primera quincena' }).fill('1500');
   await page.waitForTimeout(1300);
-  const monthly = await page.getByText('Ingreso mensual bruto').locator('..').innerText();
+  assert(!(await page.getByText('Aplicar descuentos de ley (Panamá)').isVisible()), 'el salario inicial se pide neto, sin descuentos');
+  const monthly = await page.getByText('Ingreso mensual neto').locator('..').innerText();
   assert(monthly.includes('3,000.00'), 'quincena 1,500 → mensual B/. 3,000.00');
   const annual = await page.getByText(/^Ingreso anual/).locator('..').innerText();
   assert(annual.includes('36,000.00'), 'anual B/. 36,000.00');
   await shot('03-onboarding-salary');
+  await click('Continuar');
+  step('Onboarding: monthly expenses one by one');
+  await page.getByRole('textbox', { name: 'Vivienda (alquiler o hipoteca)' }).fill('900');
+  await click('Siguiente');
+  await page.getByRole('textbox', { name: 'Electricidad' }).fill('100');
+  await click('Siguiente');
+  for (let i = 0; i < 10; i++) await click('No tengo este gasto');
+  await click('Ver resultado');
+  const result = await page.getByText('Fondo restante').locator('..').innerText();
+  assert(result.includes('2,000.00'), 'ingreso 3,000 − gastos 1,000 → fondo restante 2,000');
+  assert(await page.getByText('Sí puedes ahorrar').isVisible(), 'indica que puede ahorrar');
+  await page.waitForTimeout(900);
+  await shot('03b-onboarding-expenses');
   await click('Continuar');
   step('Onboarding: account');
   await page.getByRole('textbox', { name: 'Saldo inicial' }).fill('2500');
@@ -58,6 +72,14 @@ try {
   await page.waitForTimeout(1500);
   const hero = await page.getByText('Saldo disponible').locator('..').innerText();
   assert(hero.includes('2,500.00'), 'saldo disponible inicial 2,500');
+
+  step('Monthly plan module');
+  await click('Plan mensual');
+  await page.getByText('Fondo restante').waitFor();
+  assert((await page.getByText('Fondo restante').locator('..').innerText()).includes('2,000.00'), 'plan guardado en el onboarding: fondo restante 2,000');
+  await page.waitForTimeout(900);
+  await shot('03c-plan');
+  await click('Resumen');
 
   step('Create expense');
   await click('Movimiento', { exact: true });
@@ -161,8 +183,8 @@ try {
 
   step('Updates tab');
   await click('Actualizaciones', { exact: true });
-  await page.getByText('Monto 0.4.8 Beta 3').waitFor();
-  assert(true, 'versión 0.4.8 Beta 3 visible en Actualizaciones');
+  await page.getByText('Monto 0.5.2 Beta 5').waitFor();
+  assert(true, 'versión 0.5.2 Beta 5 visible en Actualizaciones');
   await page.waitForTimeout(900);
   await shot('19-updates');
 

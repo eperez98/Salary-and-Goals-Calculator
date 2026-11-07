@@ -1,7 +1,7 @@
 {
   "name": "monto",
   "private": true,
-  "version": "0.4.8-beta.3",
+  "version": "0.5.2-beta.5",
   "description": "Monto — finanzas personales y familiares para Panamá (PAB/USD). Aplicación de escritorio para Windows 11.",
   "type": "module",
   "scripts": {

@@ -10,6 +10,15 @@ El formato sigue [Keep a Changelog 1.1.0](https://keepachangelog.com/es-ES/1.1.0
 
 ## [Sin publicar]
 
+## [0.5.2-beta.5] - 2026-11-06
+
+### Nuevas funcionalidades
+- **Plan mensual de gastos** (nuevo módulo *Plan mensual*, disponible en los modos individual, pareja y familia). Monto pregunta los gastos del mes uno por uno (vivienda, luz, agua, gas, internet, alimentación, transporte, préstamos, tarjetas, salud, educación y entretenimiento) y permite añadir otros. Al terminar resta los gastos del ingreso mensual neto de la persona y muestra el fondo restante, si puede ahorrar y cuánto al mes. Cada integrante tiene su propio plan.
+- El plan también forma parte de la configuración inicial, como paso *Gastos* después de *Ingresos*.
+
+### Cambios
+- En la configuración inicial el salario se escribe **neto** (lo que recibes, ya con los descuentos). Ese paso ya no muestra las opciones de descuentos de ley; siguen disponibles al editar la fuente de ingreso en *Ingresos y salario*.
+
 ## [0.4.8-beta.3] - 2026-11-06
 
 Primera versión publicada de **Monto**. Incluye todas las funciones de 0.4.8-beta.2 (descritas más abajo) y añade el inglés.
@@ -78,6 +87,7 @@ Primera versión funcional de **Monto**, una aplicación nueva que reemplaza por
 - Los datos de prueba de la compilación interna *Balbo* (`com.balbo.finanzas`) no se migran.
 - Se elimina la aplicación anterior en Python (`SalaryGoals_Modern.py`). Sus datos no se migran.
 
-[Sin publicar]: https://github.com/eperez98/monto/compare/v0.4.8-beta.3...HEAD
+[Sin publicar]: https://github.com/eperez98/monto/compare/v0.5.2-beta.5...HEAD
+[0.5.2-beta.5]: https://github.com/eperez98/monto/releases/tag/v0.5.2-beta.5
 [0.4.8-beta.3]: https://github.com/eperez98/monto/releases/tag/v0.4.8-beta.3
 [0.4.8-beta.2]: https://github.com/eperez98/monto/releases/tag/v0.4.8-beta.2

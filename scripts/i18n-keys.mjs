@@ -34,7 +34,7 @@ export function collectKeys() {
 if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` || process.argv[1]?.endsWith('i18n-keys.mjs')) {
   const keys = collectKeys();
   const en = readFileSync('src/lib/locales/en.ts', 'utf8');
-  const have = new Set([...en.matchAll(/^\s*'((?:\\.|[^'\\])*)':/gm)].map((m) => m[1].replace(/\\(.)/g, '$1')));
+  const have = new Set([...en.matchAll(/^\s*(['"])((?:\\.|(?!\1)[^\\])*)\1:/gm)].map((m) => m[2].replace(/\\(.)/g, '$1')));
   const all = process.argv.includes('--all');
   const missing = [...keys].filter(([k]) => all || !have.has(k));
   for (const [k, where] of missing) console.log(`${JSON.stringify(k)}\t${where}`);
